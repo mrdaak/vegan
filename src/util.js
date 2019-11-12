@@ -37,3 +37,6 @@ export const parseBookmarksHtml = html => {
 
   return folders;
 };
+
+export const renderIfCondition = (condition, renderFn) =>
+  condition ? renderFn() : null;

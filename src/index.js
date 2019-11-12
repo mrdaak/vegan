@@ -1,6 +1,6 @@
 import m from "mithril";
 import CSS from "./styles";
-import Folder from "./folder";
+import Folder, { FolderPlaceholder } from "./folder";
 import Rss from "./rss";
 import Clock from "./clock";
 import { generateId } from "./util";
@@ -8,6 +8,8 @@ import { generateId } from "./util";
 const makeFolderId = generateId("FOLDER");
 const makeCardId = generateId("CARD");
 
+const SAMPLE_TITLE = "Project title";
+const SAMPLE_TIMEZONES = ["Europe/Belgrade", "Europe/Lisabon"];
 const SAMPLE_FOLDERS = [
   {
     title: "Folder 1",
@@ -67,7 +69,11 @@ const Root = () => {
   return {
     view: () =>
       m(CSS.appContainer, [
-        m(CSS.folderTitle, "Project"),
+        m(CSS.boardTitle, SAMPLE_TITLE),
+        m(
+          ".mb4",
+          SAMPLE_TIMEZONES.map(tz => m(Clock))
+        ),
         m(CSS.foldersContainer, [
           ...Object.values(folders).map(folder =>
             m(Folder, {
@@ -78,12 +84,10 @@ const Root = () => {
               removeItem: itemId => removeFolderItem(folder.id, itemId)
             })
           ),
-          m(Folder, {
-            placeholder: true,
+          m(FolderPlaceholder, {
             createFolder: () => createFolder()
           }),
-          m(Rss),
-          m(Clock)
+          m(Rss)
         ])
       ]),
     oncreate: () => {

@@ -1,5 +1,6 @@
 import m from "mithril";
 import CSS from "../styles";
+import { renderIfCondition } from "../util";
 
 const CORS_PROXY = "https://api.rss2json.com/v1/api.json?rss_url=";
 const SAMPLE_FEED_URL = "https://blog.codinghorror.com/rss/";
@@ -26,16 +27,17 @@ const Rss = {
   oninit: () => Feed.fetch(CORS_PROXY + SAMPLE_FEED_URL),
   view: () =>
     m(CSS.folder, [
-      m("i[data-feather=rss]"),
-      Feed.data &&
+      m(CSS.iconRss),
+      renderIfCondition(Feed.data, () =>
         Object.values(Feed.data).map(item =>
           m(CSS.folderCard, { href: item.link, target: "_blank" }, [
             item.title,
-            m("i[data-feather=external-link].child.relative", {
+            m(CSS.iconExternalLink, {
               style: { width: "15px", height: "15px", top: "2px", left: "2px" }
             })
           ])
         )
+      )
     ])
 };
 
