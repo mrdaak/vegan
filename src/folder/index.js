@@ -2,6 +2,43 @@ import m from "mithril";
 import CSS from "../styles";
 import { renderIfCondition } from "../util";
 
+const PlaceholderCard = () => {
+  let isEditingTitle = false;
+  let title = null;
+
+  return {
+    view: ({ attrs }) =>
+      m(
+        CSS.folderCardPlaceholder,
+        {
+          onclick: () => {
+            isEditingTitle = true;
+          }
+        },
+        !isEditingTitle
+          ? "add card"
+          : m(`${CSS.inputField}.f5.pv0`, {
+              oncreate: vnode => vnode.dom.focus(),
+              value: title,
+              oninput: e => (title = e.target.value),
+              onfocusout: () => {
+                isEditingTitle = false;
+                title = null;
+              },
+              onkeydown: e => {
+                if (e.key === "Enter") {
+                  isEditingTitle = false;
+                  if (title) {
+                    attrs.addItem(title);
+                  }
+                  title = null;
+                }
+              }
+            })
+      )
+  };
+};
+
 const Folder = () => {
   let isEditingTitle = false;
   let newTitle = null;
@@ -14,61 +51,82 @@ const Folder = () => {
 
       const cardList = Object.values(attrs.cards);
 
-      return m(CSS.folder, [
-        m(CSS.folderHeader, [
-          !isEditingTitle
-            ? m(
-                CSS.folderTitle,
-                { ondblclick: () => (isEditingTitle = true) },
-                attrs.title
-              )
-            : m(CSS.inputField, {
-                oncreate: vnode => vnode.dom.focus(),
-                value: newTitle || attrs.title,
-                oninput: e => (newTitle = e.target.value),
-                onfocusout: () => {
-                  isEditingTitle = false;
-                  newTitle = null;
-                },
-                onkeydown: e => {
-                  if (e.key === "Enter") {
+      return m(
+        CSS.folder,
+        {
+          style: {
+            maxHeight: "42rem",
+            minHeight: "16rem",
+            height: "min-content"
+          }
+        },
+        [
+          m(CSS.folderHeader, [
+            !isEditingTitle
+              ? m(
+                  CSS.folderTitle,
+                  {
+                    ondblclick: () => (isEditingTitle = true),
+                    style: { wordBreak: "break-all" }
+                  },
+                  attrs.title
+                )
+              : m(CSS.inputField, {
+                  oncreate: vnode => vnode.dom.focus(),
+                  value: newTitle || attrs.title,
+                  oninput: e => (newTitle = e.target.value),
+                  onfocusout: () => {
                     isEditingTitle = false;
-                    if (newTitle) {
-                      attrs.updateTitle(newTitle);
+                    if (!attrs.title && !newTitle) {
+                      attrs.delete();
                     }
                     newTitle = null;
-                  }
-                }
-              }),
-          m(".pointer", { onclick: () => attrs.delete() }, m(CSS.iconTrash))
-        ]),
-        m(
-          `.folder-cards${CSS.folderCardsWrapper}`,
-          renderIfCondition(cardList.length, () =>
-            cardList.map(item =>
-              m(".relative.hide-child", [
-                m(CSS.folderCard, { href: item.link }, item.title),
-                m(
-                  "",
-                  {
-                    onclick: () => {
-                      attrs.removeItem(item.id);
-                    }
                   },
-                  m(CSS.iconX, {
-                    style: {
-                      width: "18px",
-                      height: "18px",
-                      right: "5px",
-                      top: "9px"
+                  onkeydown: e => {
+                    if (e.key === "Enter") {
+                      isEditingTitle = false;
+                      if (newTitle) {
+                        attrs.updateTitle(newTitle);
+                      }
+                      newTitle = null;
                     }
-                  })
+                  }
+                }),
+            !isEditingTitle &&
+              m(".pointer", { onclick: () => attrs.delete() }, m(CSS.iconTrash))
+          ]),
+          m(
+            `.folder-cards${CSS.folderCardsWrapper}`,
+            { style: { minHeight: "100px" } },
+            [
+              ...renderIfCondition(cardList.length, () =>
+                cardList.map(item =>
+                  m(".relative.hide-child", [
+                    m(CSS.folderCard, { href: item.link }, item.title),
+                    m(
+                      ".pointer",
+                      {
+                        onclick: () => {
+                          attrs.removeItem(item.id);
+                        }
+                      },
+                      m(CSS.iconX, {
+                        style: {
+                          width: "1rem",
+                          height: "1rem",
+                          right: "5px",
+                          top: "10px"
+                        }
+                      })
+                    )
+                  ])
                 )
-              ])
-            )
+              ),
+              m(PlaceholderCard, { addItem: attrs.addItem })
+            ]
           )
-        )
-      ]);
+        ]
+      );
     }
   };
 };

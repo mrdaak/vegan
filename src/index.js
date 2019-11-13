@@ -9,7 +9,11 @@ const makeFolderId = generateId("FOLDER");
 const makeCardId = generateId("CARD");
 
 const SAMPLE_TITLE = "Project title";
-const SAMPLE_TIMEZONES = ["Europe/Belgrade", "Europe/Lisabon"];
+const SAMPLE_TIMEZONES = [
+  "Europe/Lisbon",
+  "Europe/Belgrade",
+  "Europe/Istanbul"
+];
 const SAMPLE_FOLDERS = [
   {
     title: "Folder 1",
@@ -71,8 +75,8 @@ const Root = () => {
       m(CSS.appContainer, [
         m(CSS.boardTitle, SAMPLE_TITLE),
         m(
-          ".mb4",
-          SAMPLE_TIMEZONES.map(tz => m(Clock))
+          ".w5.mb4",
+          SAMPLE_TIMEZONES.map(tz => m(Clock, { timezone: tz }))
         ),
         m(CSS.foldersContainer, [
           ...Object.values(folders).map(folder =>

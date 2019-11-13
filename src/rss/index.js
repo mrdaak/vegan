@@ -26,19 +26,34 @@ const Feed = {
 const Rss = {
   oninit: () => Feed.fetch(CORS_PROXY + SAMPLE_FEED_URL),
   view: () =>
-    m(CSS.folder, [
-      m(CSS.iconRss),
-      renderIfCondition(Feed.data, () =>
-        Object.values(Feed.data).map(item =>
-          m(CSS.folderCard, { href: item.link, target: "_blank" }, [
-            item.title,
-            m(CSS.iconExternalLink, {
-              style: { width: "15px", height: "15px", top: "2px", left: "2px" }
-            })
-          ])
+    m(
+      CSS.folder,
+      {
+        style: {
+          maxHeight: "42rem",
+          minHeight: "16rem",
+          height: "min-content"
+        }
+      },
+      [
+        m(CSS.iconRss),
+        renderIfCondition(Feed.data, () =>
+          Object.values(Feed.data).map(item =>
+            m(CSS.folderCard, { href: item.link, target: "_blank" }, [
+              item.title,
+              m(CSS.iconExternalLink, {
+                style: {
+                  width: "15px",
+                  height: "15px",
+                  top: "2px",
+                  left: "2px"
+                }
+              })
+            ])
+          )
         )
-      )
-    ])
+      ]
+    )
 };
 
 export default Rss;
