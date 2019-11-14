@@ -17,7 +17,7 @@ const PlaceholderCard = () => {
         },
         !isEditingTitle
           ? "add card"
-          : m(`${CSS.inputField}.f5.pv0`, {
+          : m(`${CSS.inputField}.f5`, {
               oncreate: vnode => vnode.dom.focus(),
               value: title,
               oninput: e => (title = e.target.value),
@@ -97,34 +97,39 @@ const Folder = () => {
           ]),
           m(
             `.folder-cards${CSS.folderCardsWrapper}`,
-            { style: { minHeight: "100px" } },
-            [
-              ...renderIfCondition(cardList.length, () =>
-                cardList.map(item =>
-                  m(".relative.hide-child", [
-                    m(CSS.folderCard, { href: item.link }, item.title),
-                    m(
-                      ".pointer",
-                      {
-                        onclick: () => {
-                          attrs.removeItem(item.id);
-                        }
-                      },
-                      m(CSS.iconX, {
-                        style: {
-                          width: "1rem",
-                          height: "1rem",
-                          right: "5px",
-                          top: "10px"
-                        }
-                      })
-                    )
-                  ])
-                )
-              ),
-              m(PlaceholderCard, { addItem: attrs.addItem })
-            ]
-          )
+            { style: { minHeight: "160px" } },
+            renderIfCondition(cardList.length, () =>
+              cardList.map(item =>
+                m(".relative.hide-child", [
+                  m(
+                    CSS.folderCard,
+                    {
+                      href: item.link,
+                      style: { wordBreak: "break-all" }
+                    },
+                    item.title
+                  ),
+                  m(
+                    ".pointer",
+                    {
+                      onclick: () => {
+                        attrs.removeItem(item.id);
+                      }
+                    },
+                    m(CSS.iconX, {
+                      style: {
+                        width: "1rem",
+                        height: "1rem",
+                        right: "5px",
+                        top: "10px"
+                      }
+                    })
+                  )
+                ])
+              )
+            )
+          ),
+          m(PlaceholderCard, { addItem: attrs.addItem })
         ]
       );
     }

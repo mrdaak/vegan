@@ -2,8 +2,8 @@ import m from "mithril";
 import CSS from "./styles";
 import Folder, { FolderPlaceholder } from "./folder";
 import Rss from "./rss";
-import Clock from "./clock";
 import { generateId } from "./util";
+import ClockFolder from "./clock";
 
 const makeFolderId = generateId("FOLDER");
 const makeCardId = generateId("CARD");
@@ -74,10 +74,6 @@ const Root = () => {
     view: () =>
       m(CSS.appContainer, [
         m(CSS.boardTitle, SAMPLE_TITLE),
-        m(
-          ".w5.mb4",
-          SAMPLE_TIMEZONES.map(tz => m(Clock, { timezone: tz }))
-        ),
         m(CSS.foldersContainer, [
           ...Object.values(folders).map(folder =>
             m(Folder, {
@@ -91,7 +87,8 @@ const Root = () => {
           m(FolderPlaceholder, {
             createFolder: () => createFolder()
           }),
-          m(Rss)
+          m(Rss),
+          m(ClockFolder, { timezones: SAMPLE_TIMEZONES })
         ])
       ]),
     oncreate: () => {

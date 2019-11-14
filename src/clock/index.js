@@ -1,6 +1,7 @@
 import m from "mithril";
 import { SECOND } from "../const";
 import { utcToZonedTime, format } from "date-fns-tz";
+import CSS from "../styles";
 
 const DATE_FORMAT_PATTERN = "d.M HH:mm";
 
@@ -11,10 +12,10 @@ const Clock = () => {
 
   return {
     view: ({ attrs }) =>
-      m(".w-100.relative.mb1", [
-        attrs.timezone.split("/")[1],
+      m(`${CSS.folderCard}.flex.justify-between`, [
+        m("span", attrs.timezone.split("/")[1]),
         m(
-          ".absolute.dib.right-0",
+          "span",
           format(
             utcToZonedTime(currentTime, attrs.timezone),
             DATE_FORMAT_PATTERN
@@ -31,4 +32,19 @@ const Clock = () => {
   };
 };
 
-export default Clock;
+const ClockFolder = () => {
+  return {
+    view: ({ attrs }) =>
+      m(CSS.folder, { style: { height: "min-content" } }, [
+        m(CSS.iconClock),
+        m(
+          CSS.folderCardsWrapper,
+          { style: { minHeight: "120px" } },
+          attrs.timezones &&
+            attrs.timezones.map(tz => m(Clock, { timezone: tz }))
+        )
+      ])
+  };
+};
+
+export default ClockFolder;
