@@ -49,96 +49,80 @@ const Folder = initialVnode => {
     view: ({ attrs }) => {
       const cardList = Object.values(attrs.cards);
 
-      return m(
-        CSS.folder,
-        {
-          style: {
-            maxHeight: "42rem",
-            minHeight: "16rem",
-            height: "min-content"
-          }
-        },
-        [
-          m(
-            CSS.folderHeader,
-            !isEditingTitle
-              ? [
-                  m(
-                    CSS.folderTitle,
-                    {
-                      ondblclick: () => {
-                        isEditingTitle = true;
-                        newTitle = attrs.title;
-                      },
-                      style: { wordBreak: "break-all" }
+      return m(CSS.folder, { style: CSS.folderStyleAttribute }, [
+        m(
+          CSS.folderHeader,
+          !isEditingTitle
+            ? [
+                m(
+                  CSS.folderTitle,
+                  {
+                    ondblclick: () => {
+                      isEditingTitle = true;
+                      newTitle = attrs.title;
                     },
-                    attrs.title
-                  ),
-                  m(
-                    ".pointer",
-                    { onclick: () => attrs.delete() },
-                    m(CSS.iconTrash)
-                  )
-                ]
-              : m(CSS.inputField, {
-                  oncreate: vnode => vnode.dom.focus(),
-                  value: newTitle,
-                  oninput: e => (newTitle = e.target.value),
-                  onfocusout: () => {
+                    style: { wordBreak: "break-all" }
+                  },
+                  attrs.title
+                ),
+                m(
+                  ".pointer",
+                  { onclick: () => attrs.delete() },
+                  m(CSS.iconTrash)
+                )
+              ]
+            : m(CSS.inputField, {
+                oncreate: vnode => vnode.dom.focus(),
+                value: newTitle,
+                oninput: e => (newTitle = e.target.value),
+                onfocusout: () => {
+                  isEditingTitle = false;
+                  if (!attrs.title && !newTitle) {
+                    attrs.delete();
+                  }
+                  newTitle = null;
+                },
+                onkeydown: e => {
+                  if (e.key === "Enter") {
                     isEditingTitle = false;
+                    if (newTitle) {
+                      attrs.updateTitle(newTitle);
+                      newTitle = null;
+                      return;
+                    }
+
                     if (!attrs.title && !newTitle) {
                       attrs.delete();
                     }
-                    newTitle = null;
-                  },
-                  onkeydown: e => {
-                    if (e.key === "Enter") {
-                      isEditingTitle = false;
-                      if (newTitle) {
-                        attrs.updateTitle(newTitle);
-                      }
-                      newTitle = null;
-                    }
                   }
-                })
-          ),
-          m(
-            `.folder-cards${CSS.folderCardsWrapper}`,
-            { style: { minHeight: "160px" } },
-            renderIfCondition(cardList.length, () =>
-              cardList.map(item =>
-                m(".relative.hide-child", [
-                  m(
-                    CSS.folderCard,
-                    {
-                      href: item.link,
-                      style: { wordBreak: "break-all" }
-                    },
-                    item.title
-                  ),
-                  m(
-                    ".pointer",
-                    {
-                      onclick: () => {
-                        attrs.removeItem(item.id);
-                      }
-                    },
-                    m(CSS.iconX, {
-                      style: {
-                        width: "1rem",
-                        height: "1rem",
-                        right: "5px",
-                        top: "10px"
-                      }
-                    })
-                  )
-                ])
-              )
+                }
+              })
+        ),
+        m(
+          `.folder-cards${CSS.folderCardsWrapper}`,
+          { style: { minHeight: "160px" } },
+          renderIfCondition(cardList.length, () =>
+            cardList.map(item =>
+              m(".relative.hide-child", [
+                m(
+                  CSS.folderCard,
+                  {
+                    href: item.link,
+                    style: { wordBreak: "break-all" }
+                  },
+                  item.title
+                ),
+                m(
+                  ".pointer",
+                  { onclick: () => attrs.removeItem(item.id) },
+                  m(CSS.iconX, { style: CSS.iconXStyleAttribute })
+                )
+              ])
             )
-          ),
-          m(PlaceholderCard, { addItem: attrs.addItem })
-        ]
-      );
+          )
+        ),
+        m(PlaceholderCard, { addItem: attrs.addItem })
+      ]);
     }
   };
 };
@@ -149,14 +133,8 @@ export const FolderPlaceholder = {
       CSS.folderPlaceholder,
       m(
         ".pointer",
-        {
-          onclick: () => {
-            attrs.createFolder();
-          }
-        },
-        m(CSS.iconPlus, {
-          style: { width: "60px", height: "60px" }
-        })
+        { onclick: () => attrs.createFolder() },
+        m(CSS.iconPlus, { style: CSS.iconPlusStyleAttribute })
       )
     )
 };
