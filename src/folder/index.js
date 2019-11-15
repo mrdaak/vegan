@@ -7,13 +7,14 @@ const PlaceholderCard = () => {
   let title = null;
 
   return {
-    view: ({ attrs }) =>
-      m(
+    view: ({ attrs }) => {
+      if (!isEditingTitle && title) {
+        title = null;
+      }
+      return m(
         CSS.folderCardPlaceholder,
         {
-          onclick: () => {
-            isEditingTitle = true;
-          }
+          onclick: () => (isEditingTitle = true)
         },
         !isEditingTitle
           ? "add card"
@@ -35,20 +36,17 @@ const PlaceholderCard = () => {
                 }
               }
             })
-      )
+      );
+    }
   };
 };
 
-const Folder = () => {
-  let isEditingTitle = false;
+const Folder = initialVnode => {
+  let isEditingTitle = !initialVnode.attrs.title;
   let newTitle = null;
 
   return {
     view: ({ attrs }) => {
-      if (!attrs.title && !isEditingTitle) {
-        isEditingTitle = true;
-      }
-
       const cardList = Object.values(attrs.cards);
 
       return m(
@@ -61,19 +59,30 @@ const Folder = () => {
           }
         },
         [
-          m(CSS.folderHeader, [
+          m(
+            CSS.folderHeader,
             !isEditingTitle
-              ? m(
-                  CSS.folderTitle,
-                  {
-                    ondblclick: () => (isEditingTitle = true),
-                    style: { wordBreak: "break-all" }
-                  },
-                  attrs.title
-                )
+              ? [
+                  m(
+                    CSS.folderTitle,
+                    {
+                      ondblclick: () => {
+                        isEditingTitle = true;
+                        newTitle = attrs.title;
+                      },
+                      style: { wordBreak: "break-all" }
+                    },
+                    attrs.title
+                  ),
+                  m(
+                    ".pointer",
+                    { onclick: () => attrs.delete() },
+                    m(CSS.iconTrash)
+                  )
+                ]
               : m(CSS.inputField, {
                   oncreate: vnode => vnode.dom.focus(),
-                  value: newTitle || attrs.title,
+                  value: newTitle,
                   oninput: e => (newTitle = e.target.value),
                   onfocusout: () => {
                     isEditingTitle = false;
@@ -91,10 +100,8 @@ const Folder = () => {
                       newTitle = null;
                     }
                   }
-                }),
-            !isEditingTitle &&
-              m(".pointer", { onclick: () => attrs.delete() }, m(CSS.iconTrash))
-          ]),
+                })
+          ),
           m(
             `.folder-cards${CSS.folderCardsWrapper}`,
             { style: { minHeight: "160px" } },

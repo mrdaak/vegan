@@ -65,7 +65,7 @@ const Root = () => {
       return addFolderItem(folderId, title, link);
     }
 
-    folders[folderId].cards[cardId] = { title, link, id: makeCardId() };
+    folders[folderId].cards[cardId] = { title, link, id: cardId };
   };
   const removeFolderItem = (folderId, itemId) =>
     delete folders[folderId].cards[itemId];
