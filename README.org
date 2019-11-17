@@ -8,11 +8,11 @@ Minimalistic Kanban board client implementation
 play on words: "wekan" + "vegan" => vegan
 #+END_QUOTE
 
-- \[x] React (just because)
-- \[x] TypeScript (because static types are for folks in mid-30s)
-- \[x] CSS (because i am great at it)
-- [x] no bloated dependencies
-- [x] no life
+- [-] React (just because)
+- [-] TypeScript (because static types are for folks in mid-30s)
+- [-] CSS (because i am great at it)
+- [X] no bloated dependencies
+- [X] no life
 
 ** TODO
 - config file
