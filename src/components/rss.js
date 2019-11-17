@@ -1,12 +1,13 @@
 import m from "mithril";
-import CSS from "../styles";
+
 import { renderIfCondition } from "../util";
+import CSS from "../styles";
 
 const CORS_PROXY = "https://api.rss2json.com/v1/api.json?rss_url=";
-const SAMPLE_FEED_URL = "https://blog.codinghorror.com/rss/";
 
 const Feed = {
   data: null,
+  error: null,
   fetch: url =>
     m
       .request({
@@ -15,30 +16,32 @@ const Feed = {
       })
       .then(
         ({ items }) =>
-          (Feed.data = items.reduce((res, cur) => {
-            res[cur.guid] = cur;
-            return res;
+          (Feed.data = items.reduce((result, article) => {
+            result[article.guid] = article;
+            return result;
           }, {}))
       )
-      .catch(error => console.error("Error fetching RSS feed.", error))
+      .catch(error => (Feed.error = error))
 };
 
 const Rss = {
-  oninit: () => Feed.fetch(CORS_PROXY + SAMPLE_FEED_URL),
+  oninit: ({ attrs }) => Feed.fetch(CORS_PROXY + attrs.url),
   view: () =>
     m(CSS.folder, { style: CSS.folderStyleAttribute }, [
       m(CSS.iconRss),
+      !Feed.data && !Feed.error ? "Loading.." : null,
+      Feed.error
+        ? m(".db.pa2.tc", [
+            m(CSS.iconFrown, { style: CSS.iconFrownStyleAttribute }),
+            m(".f6", `error fetching url: ${SAMPLE_FEED_URL}`)
+          ])
+        : null,
       renderIfCondition(Feed.data, () =>
         Object.values(Feed.data).map(item =>
           m(CSS.folderCard, { href: item.link, target: "_blank" }, [
             item.title,
             m(CSS.iconExternalLink, {
-              style: {
-                width: "15px",
-                height: "15px",
-                top: "2px",
-                left: "2px"
-              }
+              style: CSS.iconExternalLinkStyleAttribute
             })
           ])
         )

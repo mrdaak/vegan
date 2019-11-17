@@ -1,11 +1,11 @@
 {
-  "name": "project-page",
-  "version": "0.0.0",
-  "description": "Browser page serving as a project dashboard",
+  "name": "vegan",
+  "version": "0.1.0",
+  "description": "Minimalistic Kanban board client implementation",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mrdaak/project-start-page.git"
+    "url": "https://github.com/mrdaak/vegan.git"
   },
   "main": "dist/js/bundle",
   "module": "dist/js/bundle.mjs",
@@ -14,7 +14,7 @@
     "serve": "http-server -p 5000 dist",
     "rollup": "rollup -c ./scripts/rollup.umd.js --environment DEPS:1 && rollup -c ./scripts/rollup.es.js --environment DEPS:1",
     "clean": "rimraf dist/js/*",
-    "dev": "rollup -c ./scripts/rollup.watch.js --environment DEPS:1,PORT:3002,WATCH_DIR:./dist/ --watch"
+    "dev": "rollup -c ./scripts/rollup.watch.js --environment DEPS:1,PORT:3000,WATCH_DIR:./dist/ --watch"
   },
   "files": [
     "dist",

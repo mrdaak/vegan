@@ -1,6 +1,7 @@
 import m from "mithril";
-import CSS from "../styles";
+
 import { renderIfCondition } from "../util";
+import CSS from "../styles";
 
 const PlaceholderCard = () => {
   let isEditingTitle = false;
@@ -21,6 +22,7 @@ const PlaceholderCard = () => {
           : m(`${CSS.inputField}.f5`, {
               oncreate: vnode => vnode.dom.focus(),
               value: title,
+              maxlength: 70,
               oninput: e => (title = e.target.value),
               onfocusout: () => {
                 isEditingTitle = false;
@@ -61,7 +63,7 @@ const Folder = initialVnode => {
                       isEditingTitle = true;
                       newTitle = attrs.title;
                     },
-                    style: { wordBreak: "break-all" }
+                    style: CSS.wordWrapStyleAttribute
                   },
                   attrs.title
                 ),
@@ -74,6 +76,7 @@ const Folder = initialVnode => {
             : m(CSS.inputField, {
                 oncreate: vnode => vnode.dom.focus(),
                 value: newTitle,
+                maxlength: 30,
                 oninput: e => (newTitle = e.target.value),
                 onfocusout: () => {
                   isEditingTitle = false;
@@ -99,16 +102,20 @@ const Folder = initialVnode => {
               })
         ),
         m(
-          `.folder-cards${CSS.folderCardsWrapper}`,
-          { style: { minHeight: "160px" } },
+          CSS.folderCardsWrapper,
+          {
+            id: initialVnode.attrs.id,
+            oncreate: attrs.makeDraggable,
+            style: { minHeight: "160px" }
+          },
           renderIfCondition(cardList.length, () =>
             cardList.map(item =>
-              m(".relative.hide-child", [
+              m(".relative.hide-child", { id: item.id }, [
                 m(
                   CSS.folderCard,
                   {
                     href: item.link,
-                    style: { wordBreak: "break-all" }
+                    style: CSS.wordWrapStyleAttribute
                   },
                   item.title
                 ),
@@ -131,6 +138,7 @@ export const FolderPlaceholder = {
   view: ({ attrs }) =>
     m(
       CSS.folderPlaceholder,
+      { style: { minWidth: "16rem" } },
       m(
         ".pointer",
         { onclick: () => attrs.createFolder() },

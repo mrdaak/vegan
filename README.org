@@ -1,57 +1,45 @@
-* mithril-starter-rollup
+[[./banana-illustration.jpg]]
 
-** TODO 
-- server dashboard
-- rss reader (for blog)
-- convert to browser extension
-    - Ctrl-c-p (projectile) => show project dashboard
+* Vegan
+
+Minimalistic Kanban board client implementation
+
+#+BEGIN_QUOTE
+play on words: "wekan" + "vegan" => vegan
+#+END_QUOTE
+
+\[x] React (just because)
+\[x] TypeScript (because static types are for folks in mid-30s)
+\[x] CSS (because i am great at it)
+[x] no bloated dependencies
+[x] no life
+
+** TODO
+- config file
+- draggable folders
+- card view
+- multiple projects(boards)
+- browser extension
 
 ** Setup
 
-Install dependencies
-
-#+BEGIN_SRC sh 
+*** Development
+#+BEGIN_SRC sh
+# install dependencies (just kidding)
 npm install
+
+# start a local webserver @ PORT 3000
+npm run dev
 #+END_SRC
 
+*** Build
+#+BEGIN_SRC sh
+# create a minified bundle
+npm run build
 
-** Build and watch
-
-Script commands defined in `package.json`:
-
-- `build`: creates a minified bundle in `dist/js/`
-- `serve`: serves the build directory at [localhost:5000](http://localhost:5000/)
-- `dev`: starts a local webserver; creates a bundle in `dist/js/` that is being updated with each code change; calls LiveReload to refresh the browser after code changes are built
-
-Call `npm run dev` and open a web page at [localhost:3000](http://localhost:3000/). The port number is set by environment variable `PORT` in `package.json`.
-
-When making changes, the terminal will show lint errors, if any.
-
-** Configuration files
-
-`scripts` contains a couple of Rollup configuration files. The scripts use `rollup.base.js` as base configuration.
-
-FYI, the base configuration:
-
-- Exports `createConfig({ includeDepencies })`
-- Reads `package.json` to read package dependencies. If `includeDepencies` is `true`, it will include those dependencies in the build file
-- Creates global package names; and sets global `m` for package "mithril".
-
-*** Bundler configuration
-
-- `rollup.es.js`: Builds an ES2015 module with syntax features that node supports
-- `rollup.umd.js`: Builds a UMD bundle
-- `rollup.watch.js`: Builds a UMD bundle that is updated with each file change
-
-Optional environment variables:
-
-- `DEPS` (Number 0 or 1): include dependencies
-- `WATCH_DIR` (String): sets the watch directory when running the `dev` script
-- `PORT` (Number): sets the http server port when running the `dev` script
-
-Other configuration file:
-
-- `.babelrc`: Babel configuration
+# serve the build directory @ PORT 5000
+npm run server
+#+END_SRC
 
 ** License
 

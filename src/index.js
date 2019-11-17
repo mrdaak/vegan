@@ -1,9 +1,10 @@
 import m from "mithril";
-import CSS from "./styles";
-import Folder, { FolderPlaceholder } from "./folder";
-import Rss from "./rss";
+
+import Folder, { FolderPlaceholder } from "./components/folder";
+import Rss from "./components/rss";
+import ClockFolder from "./components/clock";
 import { generateId } from "./util";
-import ClockFolder from "./clock";
+import CSS from "./styles";
 
 const makeFolderId = generateId("FOLDER");
 const makeCardId = generateId("CARD");
@@ -14,6 +15,7 @@ const SAMPLE_TIMEZONES = [
   "Europe/Belgrade",
   "Europe/Istanbul"
 ];
+const SAMPLE_FEED_URL = "https://blog.codinghorror.com/rss";
 const SAMPLE_FOLDERS = [
   {
     title: "Folder 1",
@@ -32,18 +34,26 @@ const SAMPLE_FOLDERS = [
 ];
 
 const Root = () => {
-  const folders = SAMPLE_FOLDERS.reduce((res, cur) => {
+  const drake = dragula({});
+  drake.on("drop", (el, target, source) => {
+    // folders[target.id].cards[el.id] = { ...folders[source.id].cards[el.id] };
+    // delete folders[source.id].cards[el.id];
+  });
+
+  const appendToDraggableContainers = vnode => drake.containers.push(vnode.dom);
+
+  const folders = SAMPLE_FOLDERS.reduce((result, folder) => {
     const folderId = makeFolderId();
-    res[folderId] = {
-      title: cur.title,
+    result[folderId] = {
+      title: folder.title,
       id: folderId,
-      cards: cur.cards.reduce((res, cur) => {
+      cards: folder.cards.reduce((result, card) => {
         const cardId = makeCardId();
-        res[cardId] = { id: cardId, ...cur };
-        return res;
+        result[cardId] = { ...card, id: cardId };
+        return result;
       }, {})
     };
-    return res;
+    return result;
   }, {});
 
   const createFolder = () => {
@@ -78,6 +88,7 @@ const Root = () => {
           ...Object.values(folders).map(folder =>
             m(Folder, {
               ...folder,
+              makeDraggable: appendToDraggableContainers,
               delete: () => removeFolder(folder.id),
               updateTitle: newTitle => updateFolderTitle(folder.id, newTitle),
               addItem: (title, link) => addFolderItem(folder.id, title, link),
@@ -87,13 +98,10 @@ const Root = () => {
           m(FolderPlaceholder, {
             createFolder: () => createFolder()
           }),
-          m(Rss),
+          m(Rss, { url: SAMPLE_FEED_URL }),
           m(ClockFolder, { timezones: SAMPLE_TIMEZONES })
         ])
       ]),
-    oncreate: () => {
-      dragula([...document.getElementsByClassName("folder-cards")]);
-    },
     onupdate: () => {
       feather.replace();
     }
