@@ -4,8 +4,13 @@ Complete list of tags: http://tachyons.io/docs/table-of-styles/
 */
 
 const CSS = {
-  appContainer: ".vh-100.pa4.helvetica.bg-washed-yellow",
-  boardTitle: ".f1.mb4",
+  appContainer: ".vh-100.pa4.helvetica",
+  header: ".flex.items-center.mb4",
+  boardTitle: ".f1.mr3",
+
+  selectFileButton:
+    "input[type=file][name=file][id=file].absolute.overflow-hidden.o-0.w4",
+  selectFileLabel: "label[for=file].gray.hover-black.pointer",
 
   /** Folder */
   foldersContainer: ".flex",

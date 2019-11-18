@@ -1,0 +1,15 @@
+[project]
+title = "Project title"
+timezones = ["Europe/London", "Europe/Berlin", "Europe/Istanbul"]
+[[project.folders]]
+title = "Folder 1"
+[[project.folders.cards]]
+title = "Card A"
+[[project.folders.cards]]
+title = "Card B"
+
+[[project.folders]]
+title = "Folder 2"
+[[project.folders.cards]]
+title = "Card C"
+link = ""

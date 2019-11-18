@@ -1,6 +1,5 @@
 import m from "mithril";
 
-import { renderIfCondition } from "../util";
 import CSS from "../styles";
 
 const CORS_PROXY = "https://api.rss2json.com/v1/api.json?rss_url=";
@@ -33,19 +32,19 @@ const Rss = {
       Feed.error
         ? m(".db.pa2.tc", [
             m(CSS.iconFrown, { style: CSS.iconFrownStyleAttribute }),
-            m(".f6", `error fetching url: ${SAMPLE_FEED_URL}`)
+            m(".f6", `error fetching url: ${attrs.url}`)
           ])
         : null,
-      renderIfCondition(Feed.data, () =>
-        Object.values(Feed.data).map(item =>
-          m(CSS.folderCard, { href: item.link, target: "_blank" }, [
-            item.title,
-            m(CSS.iconExternalLink, {
-              style: CSS.iconExternalLinkStyleAttribute
-            })
-          ])
-        )
-      )
+      Feed.data
+        ? Object.values(Feed.data).map(item =>
+            m(CSS.folderCard, { href: item.link, target: "_blank" }, [
+              item.title,
+              m(CSS.iconExternalLink, {
+                style: CSS.iconExternalLinkStyleAttribute
+              })
+            ])
+          )
+        : null
     ])
 };
 

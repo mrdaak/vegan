@@ -1,4 +1,4 @@
-[[./banana-illustration.jpg]]
+[[./illustration.jpg]]
 
 * Vegan
 
@@ -8,6 +8,8 @@ Minimalistic Kanban board client implementation
 play on words: "wekan" + "vegan" => vegan
 #+END_QUOTE
 
+[[./screencast.gif]]
+
 - +React+ (just because)
 - +TypeScript+ (because static types are for folks in mid-30s)
 - +CSS+ (because i am great at it)
@@ -15,7 +17,6 @@ play on words: "wekan" + "vegan" => vegan
 - *no life*
 
 ** TODO TODO
-- config file
 - draggable folders
 - card view
 - multiple projects(boards)

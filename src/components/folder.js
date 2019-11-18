@@ -1,6 +1,5 @@
 import m from "mithril";
 
-import { renderIfCondition } from "../util";
 import CSS from "../styles";
 
 const PlaceholderCard = () => {
@@ -108,25 +107,25 @@ const Folder = initialVnode => {
             oncreate: attrs.makeDraggable,
             style: { minHeight: "160px" }
           },
-          renderIfCondition(cardList.length, () =>
-            cardList.map(item =>
-              m(".relative.hide-child", { id: item.id }, [
-                m(
-                  CSS.folderCard,
-                  {
-                    href: item.link,
-                    style: CSS.wordWrapStyleAttribute
-                  },
-                  item.title
-                ),
-                m(
-                  ".pointer",
-                  { onclick: () => attrs.removeItem(item.id) },
-                  m(CSS.iconX, { style: CSS.iconXStyleAttribute })
-                )
-              ])
-            )
-          )
+          cardList.length
+            ? cardList.map(item =>
+                m(".relative.hide-child", { id: item.id }, [
+                  m(
+                    CSS.folderCard,
+                    {
+                      href: item.link,
+                      style: CSS.wordWrapStyleAttribute
+                    },
+                    item.title
+                  ),
+                  m(
+                    ".pointer",
+                    { onclick: () => attrs.removeItem(item.id) },
+                    m(CSS.iconX, { style: CSS.iconXStyleAttribute })
+                  )
+                ])
+              )
+            : null
         ),
         m(PlaceholderCard, { addItem: attrs.addItem })
       ]);
