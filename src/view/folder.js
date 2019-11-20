@@ -1,6 +1,9 @@
 import m from "mithril";
 
 import CSS from "../styles";
+import { Folders } from "../model";
+
+const drake = dragula({});
 
 const PlaceholderCard = () => {
   let isEditingTitle = false;
@@ -31,7 +34,7 @@ const PlaceholderCard = () => {
                 if (e.key === "Enter") {
                   isEditingTitle = false;
                   if (title) {
-                    attrs.addItem(title);
+                    Folders.addFolderCard(attrs.folderId, title);
                   }
                   title = null;
                 }
@@ -68,7 +71,7 @@ const Folder = initialVnode => {
                 ),
                 m(
                   ".pointer",
-                  { onclick: () => attrs.delete() },
+                  { onclick: () => Folders.removeFolder(attrs.id) },
                   m(CSS.iconTrash)
                 )
               ]
@@ -80,7 +83,7 @@ const Folder = initialVnode => {
                 onfocusout: () => {
                   isEditingTitle = false;
                   if (!attrs.title && !newTitle) {
-                    attrs.delete();
+                    Folders.removeFolder(attrs.id);
                   }
                   newTitle = null;
                 },
@@ -88,13 +91,13 @@ const Folder = initialVnode => {
                   if (e.key === "Enter") {
                     isEditingTitle = false;
                     if (newTitle) {
-                      attrs.updateTitle(newTitle);
+                      Folders.updateFolderTitle(attrs.id, newTitle);
                       newTitle = null;
                       return;
                     }
 
                     if (!attrs.title && !newTitle) {
-                      attrs.delete();
+                      Folders.removeFolder(attrs.id);
                     }
                   }
                 }
@@ -104,7 +107,7 @@ const Folder = initialVnode => {
           CSS.folderCardsWrapper,
           {
             id: initialVnode.attrs.id,
-            oncreate: attrs.makeDraggable,
+            oncreate: vnode => drake.containers.push(vnode.dom),
             style: { minHeight: "160px" }
           },
           cardList.length
@@ -120,27 +123,29 @@ const Folder = initialVnode => {
                   ),
                   m(
                     ".pointer",
-                    { onclick: () => attrs.removeItem(item.id) },
+                    {
+                      onclick: () => Folders.removeFolderCard(attrs.id, item.id)
+                    },
                     m(CSS.iconX, { style: CSS.iconXStyleAttribute })
                   )
                 ])
               )
             : null
         ),
-        m(PlaceholderCard, { addItem: attrs.addItem })
+        m(PlaceholderCard, { folderId: attrs.id })
       ]);
     }
   };
 };
 
 export const FolderPlaceholder = {
-  view: ({ attrs }) =>
+  view: () =>
     m(
       CSS.folderPlaceholder,
       { style: { minWidth: "16rem" } },
       m(
         ".pointer",
-        { onclick: () => attrs.createFolder() },
+        { onclick: () => Folders.createFolder() },
         m(CSS.iconPlus, { style: CSS.iconPlusStyleAttribute })
       )
     )

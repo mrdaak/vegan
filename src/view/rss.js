@@ -1,30 +1,10 @@
 import m from "mithril";
 
+import { Feed } from "../model";
 import CSS from "../styles";
 
-const CORS_PROXY = "https://api.rss2json.com/v1/api.json?rss_url=";
-
-const Feed = {
-  data: null,
-  error: null,
-  fetch: url =>
-    m
-      .request({
-        method: "GET",
-        url
-      })
-      .then(
-        ({ items }) =>
-          (Feed.data = items.reduce((result, article) => {
-            result[article.guid] = article;
-            return result;
-          }, {}))
-      )
-      .catch(error => (Feed.error = error))
-};
-
 const Rss = {
-  oninit: ({ attrs }) => Feed.fetch(CORS_PROXY + attrs.url),
+  oninit: ({ attrs }) => Feed.fetch(attrs.url),
   view: () =>
     m(CSS.folder, { style: CSS.folderStyleAttribute }, [
       m(CSS.iconRss),
