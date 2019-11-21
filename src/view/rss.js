@@ -1,7 +1,7 @@
 import m from "mithril";
 
 import { Feed } from "../model";
-import CSS from "../styles";
+import CSS from "../style";
 
 const Rss = {
   oninit: ({ attrs }) => Feed.fetch(attrs.url),

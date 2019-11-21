@@ -2,7 +2,7 @@ import m from "mithril";
 import { utcToZonedTime, format } from "date-fns-tz";
 
 import { SECOND } from "../const";
-import CSS from "../styles";
+import CSS from "../style";
 
 const DATE_FORMAT_PATTERN = "d.M HH:mm";
 

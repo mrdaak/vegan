@@ -4,7 +4,7 @@ import toml from "@iarna/toml";
 import Folder, { FolderPlaceholder } from "./view/folder";
 import Rss from "./view/rss";
 import ClockFolder from "./view/clock";
-import CSS from "./styles";
+import CSS from "./style";
 import { SAMPLE_BOARD } from "./const";
 import { Folders } from "./model";
 

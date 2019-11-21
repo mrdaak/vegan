@@ -1,6 +1,6 @@
 import m from "mithril";
 
-import CSS from "../styles";
+import CSS from "../style";
 import { Folders } from "../model";
 
 const drake = dragula({});
