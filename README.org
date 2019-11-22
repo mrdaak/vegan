@@ -39,7 +39,7 @@ npm run dev
 npm run build
 
 # serve the build directory @ PORT 5000
-npm run server
+npm run serve
 #+END_SRC
 
 ** License

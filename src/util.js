@@ -1,3 +1,5 @@
+import toml from "@iarna/toml";
+
 const ALPHABET =
   "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const ID_LENGTH = 8;
@@ -8,6 +10,20 @@ export const generateId = prefix => () => {
     id += ALPHABET.charAt(Math.floor(Math.random() * ALPHABET.length));
   }
   return id;
+};
+
+export const readConfigFile = callback => e => {
+  const file = e.target.files[0];
+  if (!file) {
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = e => {
+    const config = toml.parse(e.target.result);
+    callback(config);
+  };
+  reader.readAsText(file);
 };
 
 // Parse bookmarks html file exported from Firefox/Chrome

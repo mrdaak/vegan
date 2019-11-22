@@ -1,7 +1,7 @@
 import m from "mithril";
 
 import CSS from "../style";
-import { Folders } from "../model";
+import { Boards } from "../model";
 
 const drake = dragula({});
 
@@ -34,7 +34,7 @@ const PlaceholderCard = () => {
                 if (e.key === "Enter") {
                   isEditingTitle = false;
                   if (title) {
-                    Folders.addFolderCard(attrs.folderId, title);
+                    Boards.addFolderCard(attrs.boardId, attrs.folderId, title);
                   }
                   title = null;
                 }
@@ -71,7 +71,9 @@ const Folder = initialVnode => {
                 ),
                 m(
                   ".pointer",
-                  { onclick: () => Folders.removeFolder(attrs.id) },
+                  {
+                    onclick: () => Boards.removeFolder(attrs.boardId, attrs.id)
+                  },
                   m(CSS.iconTrash)
                 )
               ]
@@ -83,7 +85,7 @@ const Folder = initialVnode => {
                 onfocusout: () => {
                   isEditingTitle = false;
                   if (!attrs.title && !newTitle) {
-                    Folders.removeFolder(attrs.id);
+                    Boards.removeFolder(attrs.boardId, attrs.id);
                   }
                   newTitle = null;
                 },
@@ -91,13 +93,17 @@ const Folder = initialVnode => {
                   if (e.key === "Enter") {
                     isEditingTitle = false;
                     if (newTitle) {
-                      Folders.updateFolderTitle(attrs.id, newTitle);
+                      Boards.updateFolderTitle(
+                        attrs.boardId,
+                        attrs.id,
+                        newTitle
+                      );
                       newTitle = null;
                       return;
                     }
 
                     if (!attrs.title && !newTitle) {
-                      Folders.removeFolder(attrs.id);
+                      Boards.removeFolder(attrs.boardId, attrs.id);
                     }
                   }
                 }
@@ -124,7 +130,12 @@ const Folder = initialVnode => {
                   m(
                     ".pointer",
                     {
-                      onclick: () => Folders.removeFolderCard(attrs.id, item.id)
+                      onclick: () =>
+                        Boards.removeFolderCard(
+                          attrs.boardId,
+                          attrs.id,
+                          item.id
+                        )
                     },
                     m(CSS.iconX, { style: CSS.iconXStyleAttribute })
                   )
@@ -132,20 +143,20 @@ const Folder = initialVnode => {
               )
             : null
         ),
-        m(PlaceholderCard, { folderId: attrs.id })
+        m(PlaceholderCard, { boardId: attrs.boardId, folderId: attrs.id })
       ]);
     }
   };
 };
 
 export const FolderPlaceholder = {
-  view: () =>
+  view: ({ attrs }) =>
     m(
       CSS.folderPlaceholder,
       { style: { minWidth: "16rem" } },
       m(
         ".pointer",
-        { onclick: () => Folders.createFolder() },
+        { onclick: () => Boards.createFolder(attrs.boardId) },
         m(CSS.iconPlus, { style: CSS.iconPlusStyleAttribute })
       )
     )
