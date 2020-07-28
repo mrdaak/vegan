@@ -1,8 +1,10 @@
+#+CAPTION: Samurai Banana Vs. Zombie Muffin, by Scott Cassidy, 2012
+#+attr_html: :style margin-left: auto; margin-right: auto; :width 400px
 [[./illustration.jpg]]
 
 * Vegan
 
-Minimalistic Kanban board client implementation
+Vegan is a minimalistic kanban-like client implementation I use for tracking projects.
 
 #+BEGIN_QUOTE
 play on words: "wekan" + "vegan" => vegan
@@ -10,11 +12,16 @@ play on words: "wekan" + "vegan" => vegan
 
 [[./screencast.gif]]
 
-- +React+ (just because)
-- +TypeScript+ (because static types are for folks in mid-30s)
-- +CSS+ (because i am great at it)
-- *no bloated dependencies*
-- *no life*
+** Try it now
+Go to https://mrdaak.github.io/vegan/
+
+** Features
+- Minimal codebase
+- TOML configuration
+- Widgets for RSS feed and timezones
+
+** Anti-features
+- +React+ +TypeScript+ +CSS+ +bloated dependencies+ +social life+
 
 ** TODO TODO
 - draggable folders
