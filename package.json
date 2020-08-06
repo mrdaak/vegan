@@ -1,12 +1,13 @@
 {
   "name": "vegan",
   "version": "0.1.0",
-  "description": "Minimalistic Kanban board client implementation",
+  "description": "Minimalistic kanban-like client implementation",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/mrdaak/vegan.git"
   },
+  "author": "Milos Mrdakovic <milos@mrdak.dev> (https://mrdak.dev)",
   "main": "dist/js/bundle",
   "module": "dist/js/bundle.mjs",
   "scripts": {
