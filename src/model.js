@@ -66,12 +66,59 @@ export const Boards = {
     Boards._data[boardId].folders[folderId].cards[cardId] = {
       title,
       link,
-      id: cardId
+      id: cardId,
+      index:
+        Object.keys(Boards._data[boardId].folders[folderId].cards).length + 1
     };
     Boards.cache();
   },
   removeFolderCard: (boardId, folderId, cardId) => {
+    const index = Boards._data[boardId].folders[folderId].cards[cardId].index;
     delete Boards._data[boardId].folders[folderId].cards[cardId];
+
+    Object.keys(Boards._data[boardId].folders[folderId].cards).forEach(
+      cardId => {
+        const card = Boards._data[boardId].folders[folderId].cards[cardId];
+        if (card.index >= index) {
+          card.index -= 1;
+        }
+      }
+    );
+
+    Boards.cache();
+  },
+  moveCard: (boardId, cardId, fromFolderId, toFolderId, index) => {
+    const sourceCard =
+      Boards._data[boardId].folders[fromFolderId].cards[cardId];
+
+    const cards = Object.values(
+      Boards._data[boardId].folders[fromFolderId].cards
+    ).sort((a, b) => a.index - b.index);
+    const targetCard = cards.find(c => c.index === index);
+    if (fromFolderId === toFolderId) {
+      const draggedIndex = cards.indexOf(sourceCard);
+      const droppedIndex = cards.indexOf(targetCard);
+
+      const insertionIndex =
+        draggedIndex < droppedIndex ? droppedIndex + 1 : droppedIndex;
+      const deletionIndex =
+        draggedIndex > droppedIndex ? draggedIndex + 1 : draggedIndex;
+
+      if (insertionIndex !== deletionIndex) {
+        cards.splice(insertionIndex, 0, sourceCard);
+        cards.splice(deletionIndex, 1);
+      }
+
+      Boards._data[boardId].folders[fromFolderId].cards = cards.reduce(
+        (res, c, i) => {
+          c.index = i + 1;
+          res[c.id] = c;
+          return res;
+        },
+        {}
+      );
+    }
+
     Boards.cache();
   },
   cache: () => localStorage.setItem("boards", JSON.stringify(Boards._data)),

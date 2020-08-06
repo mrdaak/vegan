@@ -1,0 +1,13 @@
+.dragging {
+  background: red;
+  cursor: -webkit-grabbing;
+  cursor: grabbing;
+}
+
+.dropping {
+  background: greenyellow;
+}
+
+.move {
+  cursor: move;
+}

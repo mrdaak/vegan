@@ -53,11 +53,19 @@ const CSS = {
   iconPlusStyleAttribute: { width: "60px", height: "60px" },
 
   iconX: "i[data-feather=x].child.black.absolute",
+  iconMove: "i[data-feather=move].child.black.absolute",
   iconXStyleAttribute: {
     width: "1rem",
     height: "1rem",
     right: "5px",
-    top: "10px"
+    top: "11px"
+  },
+
+  iconMoveStyleAttribute: {
+    width: "0.8rem",
+    height: "0.8rem",
+    right: "25px",
+    top: "12px"
   },
 
   iconFrown: "i[data-feather=frown].mt4.mb1",
