@@ -8,9 +8,11 @@ const CSS = {
   header: ".flex.items-center.mb4",
   boardTitle: ".f1.mr3",
 
+  uploadConfigContainer: "div.relative.w4.h2",
   selectFileButton:
-    "input[type=file][name=file][id=file].absolute.overflow-hidden.o-0.w4",
-  selectFileLabel: "label[for=file].gray.hover-black.pointer",
+    "input[type=file][name=file][id=file].absolute.overflow-hidden.o-0.top-0.left-0.w-100",
+  selectFileLabel:
+    "label[for=file].gray.hover-black.pointer.absolute.top-0.left-0.w-100",
 
   /** Folder */
   foldersContainer: ".flex",

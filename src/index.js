@@ -28,10 +28,12 @@ const App = () => {
       return m(CSS.appContainer, [
         m(CSS.header, [
           m(CSS.boardTitle, board.title),
-          m(CSS.selectFileButton, {
-            onchange: readConfigFile(handleNewConfig)
-          }),
-          m(CSS.selectFileLabel, "load config")
+          m(CSS.uploadConfigContainer, [
+            m(CSS.selectFileButton, {
+              onchange: readConfigFile(handleNewConfig)
+            }),
+            m(CSS.selectFileLabel, "load config")
+          ])
         ]),
         m(CSS.foldersContainer, [
           ...folders.map(folder =>
