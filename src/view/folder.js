@@ -36,6 +36,11 @@ const PlaceholderCard = () => {
                   }
                   title = null;
                 }
+
+                if (e.key === "Escape") {
+                  isEditingTitle = false;
+                  title = null;
+                }
               }
             })
       );
@@ -133,6 +138,14 @@ const Folder = initialVnode => {
                       }
 
                       if (!attrs.title && !newTitle) {
+                        Boards.removeFolder(attrs.boardId, attrs.id);
+                      }
+                    }
+
+                    if (e.key === "Escape") {
+                      isEditingTitle = false;
+
+                      if (!attrs.title) {
                         Boards.removeFolder(attrs.boardId, attrs.id);
                       }
                     }
