@@ -78,7 +78,6 @@ const Folder = initialVnode => {
       return m(
         CSS.folder,
         {
-          style: CSS.folderStyleAttribute,
           ondragover: e => {
             e.preventDefault();
           },
@@ -111,8 +110,7 @@ const Folder = initialVnode => {
                       ondblclick: () => {
                         isEditingTitle = true;
                         newTitle = attrs.title;
-                      },
-                      style: CSS.wordWrapStyleAttribute
+                      }
                     },
                     attrs.title
                   ),
@@ -173,13 +171,12 @@ const Folder = initialVnode => {
             },
             cardList.length
               ? cardList.map(item =>
-                  m(".relative.hide-child", { id: item.id }, [
+                  m(".relative.hide-child.break-word", { id: item.id }, [
                     m(
                       CSS.folderCard,
                       {
                         draggable: true,
                         href: item.link,
-                        style: CSS.wordWrapStyleAttribute,
                         class: getDragAndDropCardStateClass(item),
                         ondragstart: e => {
                           dragAndDropCardsState.sourceCard = item;
@@ -206,7 +203,7 @@ const Folder = initialVnode => {
                             item.id
                           )
                       },
-                      m(CSS.iconX, { style: CSS.iconXStyleAttribute })
+                      m(CSS.iconX)
                     )
                   ])
                 )
@@ -223,11 +220,10 @@ export const FolderPlaceholder = {
   view: ({ attrs }) =>
     m(
       CSS.folderPlaceholder,
-      { style: { minWidth: "16rem" } },
       m(
         ".pointer",
         { onclick: () => Boards.createFolder(attrs.boardId) },
-        m(CSS.iconPlus, { style: CSS.iconPlusStyleAttribute })
+        m(CSS.iconPlus)
       )
     )
 };

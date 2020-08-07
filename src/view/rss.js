@@ -6,12 +6,12 @@ import CSS from "../style";
 const Rss = {
   oninit: ({ attrs }) => Feed.fetch(attrs.url),
   view: () =>
-    m(CSS.folder, { style: CSS.folderStyleAttribute }, [
+    m(CSS.folder, [
       m(CSS.iconRss),
       !Feed.data && !Feed.error ? "Loading.." : null,
       Feed.error
         ? m(".db.pa2.tc", [
-            m(CSS.iconFrown, { style: CSS.iconFrownStyleAttribute }),
+            m(CSS.iconFrown),
             m(".f6", `error fetching url: ${attrs.url}`)
           ])
         : null,
@@ -19,9 +19,7 @@ const Rss = {
         ? Object.values(Feed.data).map(item =>
             m(CSS.folderCard, { href: item.link, target: "_blank" }, [
               item.title,
-              m(CSS.iconExternalLink, {
-                style: CSS.iconExternalLinkStyleAttribute
-              })
+              m(CSS.iconExternalLink)
             ])
           )
         : null

@@ -14,8 +14,6 @@ const App = () => {
     return allBoards.length ? allBoards[0].id : null;
   };
   let activeBoardId = getActiveBoardId();
-  const board = Boards.getBoardWithId(activeBoardId);
-  const folders = board.folders ? Object.values(board.folders) : [];
 
   const handleNewConfig = config => {
     Boards.loadFromConfig(config);
@@ -27,6 +25,9 @@ const App = () => {
 
   return {
     view: () => {
+      const board = Boards.getBoardWithId(activeBoardId);
+      const folders = board.folders ? Object.values(board.folders) : [];
+
       return m(CSS.appContainer, [
         m(CSS.header, [
           !isEditingTitle

@@ -17,22 +17,16 @@ const CSS = {
   /** Folder */
   foldersContainer: ".flex",
   folder:
-    ".db.ba.b--black-10.w5.black.bg-light-yellow.pa2.mr3.shadow-4.br1.overflow-x-auto.relative",
-  folderStyleAttribute: {
-    minWidth: "16rem",
-    maxHeight: "42rem",
-    minHeight: "16rem",
-    height: "min-content"
-  },
+    ".folder.db.ba.b--black-10.w5.black.bg-light-yellow.pa2.mr3.shadow-4.br1.overflow-x-auto.relative",
   folderHeader: ".db.flex.justify-between",
-  folderTitle: ".w-90.med-gray.f4",
+  folderTitle: ".w-90.med-gray.f4.break-word",
   folderCardsWrapper: ".db.w-100",
   folderCard:
     "a.db.ba.b--black-10.bg-washed-yellow.mv1.pl2.pt2.pr3.pb2.link.black.hide-child",
   folderCardPlaceholder:
     ".db.ba.b--dashed.bw1.b--black-10.mt2.pa2.tc.black-30.pointer.f5",
   folderPlaceholder:
-    ".h5.db.ba.b--dashed.bw1.b--black-10.w5.br1.mr3.flex.bg-washed-yellow.justify-center.items-center",
+    ".min-w5.h5.db.ba.b--dashed.bw1.b--black-10.w5.br1.mr3.flex.bg-washed-yellow.justify-center.items-center",
   inputField: "textarea.bn.mb2.db.w-90.bg-light-yellow.f4.outline-0",
   boardTitleInputField: "textarea.bn.f1.mr3.bg-washed-yellow",
   createFolderButton:
@@ -40,45 +34,14 @@ const CSS = {
 
   /** Icons */
   iconRss: "i[data-feather=rss]",
-
-  iconExternalLink: "i[data-feather=external-link].child.relative",
-  iconExternalLinkStyleAttribute: {
-    width: "15px",
-    height: "15px",
-    top: "2px",
-    left: "2px"
-  },
-
+  iconExternalLink:
+    "i[data-feather=external-link].child.relative.icon-external-link",
   iconClock: "i[data-feather=clock]",
   iconTrash: "i[data-feather=trash-2].black.child",
-
-  iconPlus: "i[data-feather=plus-circle].moon-gray.grow.hover-gray",
-  iconPlusStyleAttribute: { width: "60px", height: "60px" },
-
-  iconX: "i[data-feather=x].child.black.absolute",
-  iconMove: "i[data-feather=move].child.black.absolute",
-  iconXStyleAttribute: {
-    width: "1rem",
-    height: "1rem",
-    right: "5px",
-    top: "11px"
-  },
-
-  iconMoveStyleAttribute: {
-    width: "0.8rem",
-    height: "0.8rem",
-    right: "25px",
-    top: "12px"
-  },
-
-  iconFrown: "i[data-feather=frown].mt4.mb1",
-  iconFrownStyleAttribute: {
-    width: "3rem",
-    height: "3rem"
-  },
-
-  /** various */
-  wordWrapStyleAttribute: { wordBreak: "break-word" }
+  iconPlus: "i[data-feather=plus-circle].moon-gray.grow.hover-gray.icon-plus",
+  iconX: "i[data-feather=x].child.black.absolute.icon-remove",
+  iconMove: "i[data-feather=move].child.black.absolute.icon-move",
+  iconFrown: "i[data-feather=frown].mt4.mb1.icon-frown"
 };
 
 export default CSS;
