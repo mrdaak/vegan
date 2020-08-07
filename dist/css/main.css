@@ -1,5 +1,5 @@
 .dragging {
-  background: red;
+  opacity: 0.5;
   cursor: -webkit-grabbing;
   cursor: grabbing;
 }

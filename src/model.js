@@ -119,7 +119,7 @@ export const Boards = {
       if (!targetCard) {
         cards.push(sourceCard);
       } else {
-        cards.splice(index, 0, sourceCard);
+        cards.splice(index - 1, 0, sourceCard);
       }
 
       delete Boards._data[boardId].folders[fromFolderId].cards[cardId];

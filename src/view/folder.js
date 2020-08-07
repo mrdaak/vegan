@@ -48,18 +48,22 @@ const PlaceholderCard = () => {
   };
 };
 
-const initialDndState = {
-  drag: null,
-  drop: null,
+const initialDragAndDropCardsState = {
+  sourceCard: null,
+  targetCard: null,
   sourceFolderId: null
 };
-let dnd = { ...initialDndState };
-const resetDndState = () => {
-  dnd = { ...initialDndState };
+let dragAndDropCardsState = { ...initialDragAndDropCardsState };
+const resetDragAndDropCardsState = () => {
+  dragAndDropCardsState = { ...initialDragAndDropCardsState };
 };
 
-const getDndItemClass = item =>
-  item === dnd.drag ? "dragging" : item === dnd.drop ? "dropping" : "";
+const getDragAndDropCardStateClass = card =>
+  card === dragAndDropCardsState.sourceCard
+    ? "dragging"
+    : card === dragAndDropCardsState.targetCard
+    ? "dropping"
+    : "";
 
 const Folder = initialVnode => {
   let isEditingTitle = !initialVnode.attrs.title;
@@ -81,18 +85,19 @@ const Folder = initialVnode => {
           ondrop: e => {
             e.preventDefault();
 
-            if (!dnd.drag) {
+            if (dragAndDropCardsState.sourceCard) {
+              Boards.moveCard(
+                attrs.boardId,
+                dragAndDropCardsState.sourceCard.id,
+                dragAndDropCardsState.sourceFolderId,
+                attrs.id,
+                dragAndDropCardsState.targetCard
+                  ? dragAndDropCardsState.targetCard.index
+                  : 1
+              );
+              resetDragAndDropCardsState();
               return;
             }
-
-            Boards.moveCard(
-              attrs.boardId,
-              dnd.drag.id,
-              dnd.sourceFolderId,
-              attrs.id,
-              dnd.drop ? dnd.drop.index : 1
-            );
-            resetDndState();
           }
         },
         [
@@ -175,18 +180,18 @@ const Folder = initialVnode => {
                         draggable: true,
                         href: item.link,
                         style: CSS.wordWrapStyleAttribute,
-                        class: getDndItemClass(item),
+                        class: getDragAndDropCardStateClass(item),
                         ondragstart: e => {
-                          dnd.drag = item;
-                          dnd.sourceFolderId = attrs.id;
+                          dragAndDropCardsState.sourceCard = item;
+                          dragAndDropCardsState.sourceFolderId = attrs.id;
                         },
                         ondragover: _e => {
-                          if (dnd.drag) {
-                            dnd.drop = item;
+                          if (dragAndDropCardsState.sourceCard) {
+                            dragAndDropCardsState.targetCard = item;
                           }
                         },
                         ondragend: _e => {
-                          resetDndState();
+                          resetDragAndDropCardsState();
                         }
                       },
                       item.title
