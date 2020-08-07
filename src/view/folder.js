@@ -48,14 +48,22 @@ const PlaceholderCard = () => {
   };
 };
 
+const initialDndState = {
+  drag: null,
+  drop: null,
+  sourceFolderId: null
+};
+let dnd = { ...initialDndState };
+const resetDndState = () => {
+  dnd = { ...initialDndState };
+};
+
+const getDndItemClass = item =>
+  item === dnd.drag ? "dragging" : item === dnd.drop ? "dropping" : "";
+
 const Folder = initialVnode => {
   let isEditingTitle = !initialVnode.attrs.title;
   let newTitle = null;
-
-  const dnd = { drag: null, drop: null };
-
-  const dndClass = item =>
-    item === dnd.drag ? "dragging" : item === dnd.drop ? "dropping" : "";
 
   return {
     view: ({ attrs }) => {
@@ -80,11 +88,11 @@ const Folder = initialVnode => {
             Boards.moveCard(
               attrs.boardId,
               dnd.drag.id,
+              dnd.sourceFolderId,
               attrs.id,
-              attrs.id,
-              dnd.drop ? dnd.drop.index : cardList.length + 1
+              dnd.drop ? dnd.drop.index : 1
             );
-            dnd.drag = dnd.drop = null;
+            resetDndState();
           }
         },
         [
@@ -167,15 +175,18 @@ const Folder = initialVnode => {
                         draggable: true,
                         href: item.link,
                         style: CSS.wordWrapStyleAttribute,
-                        class: dndClass(item),
+                        class: getDndItemClass(item),
                         ondragstart: e => {
                           dnd.drag = item;
+                          dnd.sourceFolderId = attrs.id;
                         },
                         ondragover: _e => {
-                          if (dnd.drag) dnd.drop = item;
+                          if (dnd.drag) {
+                            dnd.drop = item;
+                          }
                         },
                         ondragend: _e => {
-                          dnd.drag = dnd.drop = null;
+                          resetDndState();
                         }
                       },
                       item.title

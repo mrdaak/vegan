@@ -91,11 +91,13 @@ export const Boards = {
     const sourceCard =
       Boards._data[boardId].folders[fromFolderId].cards[cardId];
 
-    const cards = Object.values(
-      Boards._data[boardId].folders[fromFolderId].cards
-    ).sort((a, b) => a.index - b.index);
-    const targetCard = cards.find(c => c.index === index);
+    let cards;
     if (fromFolderId === toFolderId) {
+      cards = Object.values(
+        Boards._data[boardId].folders[fromFolderId].cards
+      ).sort((a, b) => a.index - b.index);
+      const targetCard = cards.find(c => c.index === index);
+
       const draggedIndex = cards.indexOf(sourceCard);
       const droppedIndex = cards.indexOf(targetCard);
 
@@ -108,16 +110,29 @@ export const Boards = {
         cards.splice(insertionIndex, 0, sourceCard);
         cards.splice(deletionIndex, 1);
       }
+    } else {
+      cards = Object.values(
+        Boards._data[boardId].folders[toFolderId].cards
+      ).sort((a, b) => a.index - b.index);
+      const targetCard = cards.find(c => c.index === index);
 
-      Boards._data[boardId].folders[fromFolderId].cards = cards.reduce(
-        (res, c, i) => {
-          c.index = i + 1;
-          res[c.id] = c;
-          return res;
-        },
-        {}
-      );
+      if (!targetCard) {
+        cards.push(sourceCard);
+      } else {
+        cards.splice(index, 0, sourceCard);
+      }
+
+      delete Boards._data[boardId].folders[fromFolderId].cards[cardId];
     }
+
+    Boards._data[boardId].folders[toFolderId].cards = cards.reduce(
+      (res, c, i) => {
+        c.index = i + 1;
+        res[c.id] = c;
+        return res;
+      },
+      {}
+    );
 
     Boards.cache();
   },
