@@ -34,6 +34,7 @@ const CSS = {
   folderPlaceholder:
     ".h5.db.ba.b--dashed.bw1.b--black-10.w5.br1.mr3.flex.bg-washed-yellow.justify-center.items-center",
   inputField: "textarea.bn.mb2.db.w-90.bg-light-yellow.f4.outline-0",
+  boardTitleInputField: "textarea.bn.f1.mr3.bg-washed-yellow",
   createFolderButton:
     "div.br-100.bg-moon-gray.white.w3.h3.flex.justify-center.items-center.f1.pointer",
 
