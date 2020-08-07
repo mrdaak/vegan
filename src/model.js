@@ -152,9 +152,9 @@ export const Boards = {
           result[folderId] = {
             title: folder.title,
             id: folderId,
-            cards: folder.cards.reduce((result, card) => {
+            cards: folder.cards.reduce((result, card, i) => {
               const cardId = makeCardId();
-              result[cardId] = { ...card, id: cardId };
+              result[cardId] = { ...card, id: cardId, index: i + 1 };
               return result;
             }, {})
           };
