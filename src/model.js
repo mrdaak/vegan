@@ -1,101 +1,138 @@
 import m from "mithril";
+import * as R from "ramda";
 
 import { generateId } from "./util";
 import { SAMPLE_BOARD } from "./const";
 
 const CORS_PROXY = "https://api.rss2json.com/v1/api.json?rss_url=";
+const LOCAL_STORAGE_KEY = "boards";
 
 const makeBoardId = generateId("BOARD");
 const makeFolderId = generateId("FOLDER");
 const makeCardId = generateId("CARD");
 
+const view = lens => R.view(lens, Boards._data);
+const set = (lens, payload, src) => R.set(lens, payload, src || Boards._data);
+
+const boardsLens = (boardId = null) => {
+  const path = [];
+  boardId && path.push(boardId);
+  return R.lensPath(path);
+};
+const foldersLens = (folderId = null) => {
+  const path = [Boards.active, "folders"];
+  folderId && path.push(folderId);
+  return R.lensPath(path);
+};
+const cardsLens = (folderId, cardId = null) => {
+  const path = [Boards.active, "folders", folderId, "cards"];
+  cardId && path.push(cardId);
+  return R.lensPath(path);
+};
+
 export const Boards = {
   _data: null,
-  getAll: () => Object.values(Boards._data),
-  getBoardWithId: boardId => Boards._data[boardId],
+  active: null,
+  setActive: id => {
+    if (id) Boards.active = id;
+  },
+  commit: data => {
+    Boards._data = data;
+    Boards.cache();
+  },
+  getAll: () => R.values(view(boardsLens())).sort((a, b) => a.index - b.index),
+  getActiveBoard: () => view(boardsLens(Boards.active)),
+  getActiveBoardFolders: () => R.values(view(foldersLens())),
   createBoard: () => {
     const boardId = makeBoardId();
-    if (Boards._data[boardId]) {
+    const lens = boardsLens(boardId);
+    if (view(lens)) {
       return Boards.createBoard();
     }
 
-    Boards._data[boardId] = {
+    const board = {
+      index: Object.keys(view(boardsLens())).length + 1,
       title: null,
       timezones: null,
       rss_url: null,
       folders: {}
     };
-    Boards.cache();
+    Boards.commit(set(lens, board));
   },
   removeBoard: boardId => {
-    delete Boards._data[boardId];
-    Boards.cache();
+    const lens = boardsLens();
+    Boards.commit(set(lens, R.dissoc(boardId, view(lens))));
   },
-  updateBoardTitle: (boardId, title) => {
-    Boards._data[boardId].title = title;
-    Boards.cache();
+  updateBoardTitle: title => {
+    const lens = boardsLens(Boards.active);
+    Boards.commit(set(lens, R.merge(view(lens), { title })));
   },
-  createFolder: boardId => {
+  createFolder: () => {
     const folderId = makeFolderId();
-    if (Boards._data[boardId].folders[folderId]) {
+    const lens = foldersLens(folderId);
+    if (view(lens)) {
       return Boards.createFolder();
     }
 
-    Boards._data[boardId].folders[folderId] = {
+    const folder = {
       title: null,
       cards: {},
       id: folderId,
-      boardId
+      boardId: Boards.active
     };
-    Boards.cache();
+    Boards.commit(set(lens, folder));
   },
-  removeFolder: (boardId, folderId) => {
-    delete Boards._data[boardId].folders[folderId];
-    Boards.cache();
+  removeFolder: folderId => {
+    const lens = foldersLens();
+    Boards.commit(set(lens, R.dissoc(folderId, view(lens))));
   },
-  updateFolderTitle: (boardId, folderId, title) => {
-    Boards._data[boardId].folders[folderId].title = title;
-    Boards.cache();
+  updateFolderTitle: (folderId, title) => {
+    const lens = foldersLens(folderId);
+    Boards.commit(set(lens, R.merge(view(lens), { title })));
   },
-  addFolderCard: (boardId, folderId, title, link) => {
+  addFolderCard: (folderId, title, link) => {
     const cardId = makeCardId();
-    if (Boards._data[boardId].folders[folderId].cards[cardId]) {
-      return addFolderItem(boardId, folderId, title, link);
+    const lens = cardsLens(folderId, cardId);
+    if (view(lens)) {
+      return addFolderItem(folderId, title, link);
     }
 
-    Boards._data[boardId].folders[folderId].cards[cardId] = {
+    const card = {
       title,
       link,
       id: cardId,
-      index:
-        Object.keys(Boards._data[boardId].folders[folderId].cards).length + 1
+      index: Object.keys(view(cardsLens(folderId))).length + 1
     };
-    Boards.cache();
+    Boards.commit(set(lens, card));
   },
-  removeFolderCard: (boardId, folderId, cardId) => {
-    const index = Boards._data[boardId].folders[folderId].cards[cardId].index;
-    delete Boards._data[boardId].folders[folderId].cards[cardId];
+  removeFolderCard: (folderId, cardId) => {
+    const lens = cardsLens(folderId, cardId);
+    const index = R.prop("index", view(lens));
+    delete Boards._data[Boards.active].folders[folderId].cards[cardId];
 
-    Object.keys(Boards._data[boardId].folders[folderId].cards).forEach(
-      cardId => {
-        const card = Boards._data[boardId].folders[folderId].cards[cardId];
+    const updatedCards = Object.keys(view(cardsLens(folderId))).reduce(
+      (res, cardId) => {
+        const card = view(cardsLens(folderId, cardId));
         if (card.index >= index) {
           card.index -= 1;
         }
-      }
+        res[cardId] = card;
+        return res;
+      },
+      {}
     );
 
-    Boards.cache();
+    Boards.commit(set(cardsLens(folderId), updatedCards));
   },
-  moveCard: (boardId, cardId, fromFolderId, toFolderId, index) => {
-    const sourceCard =
-      Boards._data[boardId].folders[fromFolderId].cards[cardId];
+  moveCard: (cardId, fromFolderId, toFolderId, index) => {
+    const sourceCard = view(cardsLens(fromFolderId, cardId));
 
     let cards;
+    let payload;
     if (fromFolderId === toFolderId) {
-      cards = Object.values(
-        Boards._data[boardId].folders[fromFolderId].cards
-      ).sort((a, b) => a.index - b.index);
+      cards = Object.values(view(cardsLens(fromFolderId))).sort(
+        (a, b) => a.index - b.index
+      );
       const targetCard = cards.find(c => c.index === index);
 
       const draggedIndex = cards.indexOf(sourceCard);
@@ -111,9 +148,9 @@ export const Boards = {
         cards.splice(deletionIndex, 1);
       }
     } else {
-      cards = Object.values(
-        Boards._data[boardId].folders[toFolderId].cards
-      ).sort((a, b) => a.index - b.index);
+      cards = Object.values(view(cardsLens(toFolderId))).sort(
+        (a, b) => a.index - b.index
+      );
       const targetCard = cards.find(c => c.index === index);
 
       if (!targetCard) {
@@ -122,28 +159,42 @@ export const Boards = {
         cards.splice(index - 1, 0, sourceCard);
       }
 
-      delete Boards._data[boardId].folders[fromFolderId].cards[cardId];
+      payload = set(
+        cardsLens(fromFolderId),
+        R.dissoc(cardId, view(cardsLens(fromFolderId)))
+      );
     }
 
-    Boards._data[boardId].folders[toFolderId].cards = cards.reduce(
-      (res, c, i) => {
+    payload = set(
+      cardsLens(toFolderId),
+      cards.reduce((res, c, i) => {
         c.index = i + 1;
         res[c.id] = c;
         return res;
-      },
-      {}
+      }, {}),
+      payload
     );
-
-    Boards.cache();
+    Boards.commit(payload);
   },
-  cache: () => localStorage.setItem("boards", JSON.stringify(Boards._data)),
-  loadFromCache: () =>
-    (Boards._data = JSON.parse(localStorage.getItem("boards"))),
+  cache: () =>
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(view(boardsLens()))),
+  loadFromCache: () => {
+    const config = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+    if (config) {
+      const id = R.prop(
+        "id",
+        R.values(R.view(boardsLens(), config)).find(b => b.index === 1)
+      );
+      Boards.setActive(id);
+      Boards.commit(config);
+    }
+  },
   loadFromConfig: config => {
-    Boards._data = Object.values(config).reduce((result, board) => {
+    const payload = Object.values(config).reduce((result, board, i) => {
       const boardId = makeBoardId();
       result[boardId] = {
         id: boardId,
+        index: i + 1,
         title: board.title,
         timezones: board.timezones,
         rss_url: board.rss_url,
@@ -164,17 +215,19 @@ export const Boards = {
       return result;
     }, {});
 
-    Boards.cache();
+    Boards.setActive(
+      R.prop(
+        "id",
+        R.values(R.view(boardsLens(), payload)).find(b => b.index === 1)
+      )
+    );
+    Boards.commit(payload);
   },
   init: () => {
     Boards.loadFromCache();
     if (!Boards._data) {
-      Boards.loadFromConfig(
-        JSON.parse(localStorage.getItem("boards")) || SAMPLE_BOARD
-      );
+      Boards.loadFromConfig(SAMPLE_BOARD);
     }
-
-    Boards.cache();
   }
 };
 

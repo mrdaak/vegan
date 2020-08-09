@@ -50,7 +50,8 @@
     "@iarna/toml": "^2.2.3",
     "date-fns": "^2.7.0",
     "date-fns-tz": "^1.0.8",
-    "mithril": "^2.0.3"
+    "mithril": "^2.0.3",
+    "ramda": "^0.27.1"
   },
   "husky": {
     "hooks": {

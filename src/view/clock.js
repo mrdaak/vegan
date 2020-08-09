@@ -34,15 +34,21 @@ const Clock = () => {
 };
 
 const ClockFolder = {
-  view: ({ attrs }) =>
-    m(CSS.folder, { style: { height: "min-content", minWidth: "16rem" } }, [
-      m(CSS.iconClock),
-      m(
-        CSS.folderCardsWrapper,
-        { style: { minHeight: "120px" } },
-        attrs.timezones && attrs.timezones.map(tz => m(Clock, { timezone: tz }))
-      )
-    ])
+  view: ({ attrs }) => {
+    return m(
+      CSS.folder,
+      { style: { height: "min-content", minWidth: "16rem" } },
+      [
+        m(CSS.iconClock),
+        m(
+          CSS.folderCardsWrapper,
+          { style: { minHeight: "120px" } },
+          attrs.timezones &&
+            attrs.timezones.map(tz => m(Clock, { timezone: tz }))
+        )
+      ]
+    );
+  }
 };
 
 export default ClockFolder;

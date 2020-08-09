@@ -9,24 +9,14 @@ import { readConfigFile } from "./util";
 
 const App = () => {
   Boards.init();
-  const getActiveBoardId = () => {
-    const allBoards = Boards.getAll();
-    return allBoards.length ? allBoards[0].id : null;
-  };
-  let activeBoardId = getActiveBoardId();
-
-  const handleNewConfig = config => {
-    Boards.loadFromConfig(config);
-    activeBoardId = getActiveBoardId();
-  };
 
   let isEditingTitle = false;
   let newTitle = null;
 
   return {
     view: () => {
-      const board = Boards.getBoardWithId(activeBoardId);
-      const folders = board.folders ? Object.values(board.folders) : [];
+      const board = Boards.getActiveBoard();
+      const folders = Boards.getActiveBoardFolders();
 
       return m(CSS.appContainer, [
         m(CSS.header, [
@@ -54,7 +44,7 @@ const App = () => {
                   if (e.key === "Enter") {
                     isEditingTitle = false;
                     if (newTitle) {
-                      Boards.updateBoardTitle(activeBoardId, newTitle);
+                      Boards.updateBoardTitle(newTitle);
                       newTitle = null;
                       return;
                     }
@@ -68,7 +58,7 @@ const App = () => {
               }),
           m(CSS.uploadConfigContainer, [
             m(CSS.selectFileButton, {
-              onchange: readConfigFile(handleNewConfig)
+              onchange: readConfigFile(Boards.loadFromConfig)
             }),
             m(CSS.selectFileLabel, "load config")
           ])

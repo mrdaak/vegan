@@ -32,7 +32,7 @@ const PlaceholderCard = () => {
                 if (e.key === "Enter") {
                   isEditingTitle = false;
                   if (title) {
-                    Boards.addFolderCard(attrs.boardId, attrs.folderId, title);
+                    Boards.addFolderCard(attrs.folderId, title);
                   }
                   title = null;
                 }
@@ -86,7 +86,6 @@ const Folder = initialVnode => {
 
             if (dragAndDropCardsState.sourceCard) {
               Boards.moveCard(
-                attrs.boardId,
                 dragAndDropCardsState.sourceCard.id,
                 dragAndDropCardsState.sourceFolderId,
                 attrs.id,
@@ -117,8 +116,7 @@ const Folder = initialVnode => {
                   m(
                     ".pointer",
                     {
-                      onclick: () =>
-                        Boards.removeFolder(attrs.boardId, attrs.id)
+                      onclick: () => Boards.removeFolder(attrs.id)
                     },
                     m(CSS.iconTrash)
                   )
@@ -131,7 +129,7 @@ const Folder = initialVnode => {
                   onfocusout: () => {
                     isEditingTitle = false;
                     if (!attrs.title && !newTitle) {
-                      Boards.removeFolder(attrs.boardId, attrs.id);
+                      Boards.removeFolder(attrs.id);
                     }
                     newTitle = null;
                   },
@@ -139,17 +137,13 @@ const Folder = initialVnode => {
                     if (e.key === "Enter") {
                       isEditingTitle = false;
                       if (newTitle) {
-                        Boards.updateFolderTitle(
-                          attrs.boardId,
-                          attrs.id,
-                          newTitle
-                        );
+                        Boards.updateFolderTitle(attrs.id, newTitle);
                         newTitle = null;
                         return;
                       }
 
                       if (!attrs.title && !newTitle) {
-                        Boards.removeFolder(attrs.boardId, attrs.id);
+                        Boards.removeFolder(attrs.id);
                       }
                     }
 
@@ -157,7 +151,7 @@ const Folder = initialVnode => {
                       isEditingTitle = false;
 
                       if (!attrs.title) {
-                        Boards.removeFolder(attrs.boardId, attrs.id);
+                        Boards.removeFolder(attrs.id);
                       }
                     }
                   }
@@ -197,11 +191,7 @@ const Folder = initialVnode => {
                       ".pointer",
                       {
                         onclick: () =>
-                          Boards.removeFolderCard(
-                            attrs.boardId,
-                            attrs.id,
-                            item.id
-                          )
+                          Boards.removeFolderCard(attrs.id, item.id)
                       },
                       m(CSS.iconX)
                     )
@@ -220,11 +210,7 @@ export const FolderPlaceholder = {
   view: ({ attrs }) =>
     m(
       CSS.folderPlaceholder,
-      m(
-        ".pointer",
-        { onclick: () => Boards.createFolder(attrs.boardId) },
-        m(CSS.iconPlus)
-      )
+      m(".pointer", { onclick: () => Boards.createFolder() }, m(CSS.iconPlus))
     )
 };
 
