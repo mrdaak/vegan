@@ -19,11 +19,11 @@ Go to https://mrdaak.github.io/vegan/
 - Minimal codebase
 - TOML configuration
 - Widgets for RSS feed and timezones
+- Multiple boards
 
 ** TODO TODO
 - draggable folders
 - card view
-- multiple boards
 - browser extension
 
 ** Setup
