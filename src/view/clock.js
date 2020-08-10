@@ -35,19 +35,14 @@ const Clock = () => {
 
 const ClockFolder = {
   view: ({ attrs }) => {
-    return m(
-      CSS.folder,
-      { style: { height: "min-content", minWidth: "16rem" } },
-      [
-        m(CSS.iconClock),
-        m(
-          CSS.folderCardsWrapper,
-          { style: { minHeight: "120px" } },
-          attrs.timezones &&
-            attrs.timezones.map(tz => m(Clock, { timezone: tz }))
-        )
-      ]
-    );
+    return m(CSS.folder, [
+      m(CSS.iconClock),
+      m(
+        CSS.folderCardsWrapper,
+        { style: { minHeight: "120px" } },
+        attrs.timezones && attrs.timezones.map(tz => m(Clock, { timezone: tz }))
+      )
+    ]);
   }
 };
 

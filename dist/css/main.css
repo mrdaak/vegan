@@ -26,9 +26,14 @@
   left: 2px;
 }
 
-.icon-plus {
+.icon-plus--big {
   width: 60px;
   height: 60px;
+}
+
+.icon-plus--small {
+  width: 20px;
+  height: 20px;
 }
 
 .icon-remove {
@@ -56,4 +61,8 @@
 
 .break-word {
   word-break: break-word;
+}
+
+.upload-config svg {
+  display: none;
 }

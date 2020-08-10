@@ -210,7 +210,11 @@ export const FolderPlaceholder = {
   view: ({ attrs }) =>
     m(
       CSS.folderPlaceholder,
-      m(".pointer", { onclick: () => Boards.createFolder() }, m(CSS.iconPlus))
+      m(
+        ".pointer",
+        { onclick: () => Boards.createFolder() },
+        m(`${CSS.iconPlus}.icon-plus--big`)
+      )
     )
 };
 

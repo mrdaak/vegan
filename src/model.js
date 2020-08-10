@@ -5,7 +5,8 @@ import { generateId } from "./util";
 import { SAMPLE_BOARD } from "./const";
 
 const CORS_PROXY = "https://api.rss2json.com/v1/api.json?rss_url=";
-const LOCAL_STORAGE_KEY = "boards";
+const LOCAL_STORAGE_DATA_KEY = "boards";
+const LOCAL_STORAGE_ACTIVE_KEY = "active";
 
 const makeBoardId = generateId("BOARD");
 const makeFolderId = generateId("FOLDER");
@@ -34,7 +35,8 @@ export const Boards = {
   _data: null,
   active: null,
   setActive: id => {
-    if (id) Boards.active = id;
+    Boards.active = id || null;
+    localStorage.setItem(LOCAL_STORAGE_ACTIVE_KEY, JSON.stringify(id));
   },
   commit: data => {
     Boards._data = data;
@@ -43,6 +45,7 @@ export const Boards = {
   getAll: () => R.values(view(boardsLens())).sort((a, b) => a.index - b.index),
   getActiveBoard: () => view(boardsLens(Boards.active)),
   getActiveBoardFolders: () => R.values(view(foldersLens())),
+  getNavigationData: () => R.map(R.pick(["id", "title"]), Boards.getAll()),
   createBoard: () => {
     const boardId = makeBoardId();
     const lens = boardsLens(boardId);
@@ -51,20 +54,25 @@ export const Boards = {
     }
 
     const board = {
+      id: boardId,
       index: Object.keys(view(boardsLens())).length + 1,
       title: null,
-      timezones: null,
+      timezones: [],
       rss_url: null,
       folders: {}
     };
     Boards.commit(set(lens, board));
   },
   removeBoard: boardId => {
+    const nextBoard = Boards.getAll().find(b => b.id !== boardId);
+    if (nextBoard) {
+      Boards.setActive(nextBoard.id);
+    }
     const lens = boardsLens();
     Boards.commit(set(lens, R.dissoc(boardId, view(lens))));
   },
-  updateBoardTitle: title => {
-    const lens = boardsLens(Boards.active);
+  updateBoardTitle: (title, boardId = null) => {
+    const lens = boardsLens(boardId || Boards.active);
     Boards.commit(set(lens, R.merge(view(lens), { title })));
   },
   createFolder: () => {
@@ -177,16 +185,22 @@ export const Boards = {
     Boards.commit(payload);
   },
   cache: () =>
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(view(boardsLens()))),
+    localStorage.setItem(
+      LOCAL_STORAGE_DATA_KEY,
+      JSON.stringify(view(boardsLens()))
+    ),
   loadFromCache: () => {
-    const config = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
-    if (config) {
-      const id = R.prop(
-        "id",
-        R.values(R.view(boardsLens(), config)).find(b => b.index === 1)
-      );
+    const data = JSON.parse(localStorage.getItem(LOCAL_STORAGE_DATA_KEY));
+    const activeId = JSON.parse(localStorage.getItem(LOCAL_STORAGE_ACTIVE_KEY));
+    if (data) {
+      const id =
+        activeId ||
+        R.prop(
+          "id",
+          R.values(R.view(boardsLens(), data)).find(b => b.index === 1)
+        );
       Boards.setActive(id);
-      Boards.commit(config);
+      Boards.commit(data);
     }
   },
   loadFromConfig: config => {

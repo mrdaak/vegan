@@ -8,7 +8,8 @@ const CSS = {
   header: ".flex.items-center.mb4",
   boardTitle: ".f1.mr3",
 
-  uploadConfigContainer: "div.relative.w4.h2",
+  navigationWrapper: ".w-100.flex.mb2",
+  uploadConfigContainer: "div.upload-config.relative.w4.h2.ml4",
   selectFileButton:
     "input[type=file][name=file][id=file].absolute.overflow-hidden.o-0.top-0.left-0.w-100",
   selectFileLabel:
@@ -29,6 +30,7 @@ const CSS = {
     ".min-w5.h5.db.ba.b--dashed.bw1.b--black-10.w5.br1.mr3.flex.bg-washed-yellow.justify-center.items-center",
   inputField: "textarea.bn.mb2.db.w-90.bg-light-yellow.f4.outline-0",
   boardTitleInputField: "textarea.bn.f1.mr3.bg-washed-yellow",
+  navigationTitleInputField: "textarea.bn.bg-washed-yellow",
   createFolderButton:
     "div.br-100.bg-moon-gray.white.w3.h3.flex.justify-center.items-center.f1.pointer",
 
@@ -38,7 +40,7 @@ const CSS = {
     "i[data-feather=external-link].child.relative.icon-external-link",
   iconClock: "i[data-feather=clock]",
   iconTrash: "i[data-feather=trash-2].black.child",
-  iconPlus: "i[data-feather=plus-circle].moon-gray.grow.hover-gray.icon-plus",
+  iconPlus: "i[data-feather=plus-circle].moon-gray.grow.hover-gray",
   iconX: "i[data-feather=x].child.black.absolute.icon-remove",
   iconMove: "i[data-feather=move].child.black.absolute.icon-move",
   iconFrown: "i[data-feather=frown].mt4.mb1.icon-frown"
