@@ -12,6 +12,21 @@ const makeBoardId = generateId("BOARD");
 const makeFolderId = generateId("FOLDER");
 const makeCardId = generateId("CARD");
 
+let historyIndex = 0;
+const history = [];
+history.push = function() {
+  if (this.length >= 10) {
+    this.shift();
+  }
+
+  if (this.length && historyIndex !== this.length - 1) {
+    this.splice(historyIndex + 1);
+  }
+
+  Array.prototype.push.apply(this, arguments);
+  historyIndex = this.length - 1;
+};
+
 const view = lens => R.view(lens, Boards._data);
 const set = (lens, payload, src) => R.set(lens, payload, src || Boards._data);
 
@@ -41,6 +56,25 @@ export const Boards = {
   commit: data => {
     Boards._data = data;
     Boards.cache();
+    history.push(data);
+  },
+  get hasUndo() {
+    return historyIndex !== 0;
+  },
+  get hasRedo() {
+    return historyIndex !== history.length - 1;
+  },
+  undo: () => {
+    if (Boards.hasUndo) {
+      historyIndex -= 1;
+      Boards._data = R.clone(history[historyIndex]);
+    }
+  },
+  redo: () => {
+    if (Boards.hasRedo) {
+      historyIndex += 1;
+      Boards._data = R.clone(history[historyIndex]);
+    }
   },
   getAll: () => R.values(view(boardsLens())).sort((a, b) => a.index - b.index),
   getActiveBoard: () => view(boardsLens(Boards.active)),

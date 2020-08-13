@@ -20,6 +20,7 @@ Go to https://mrdaak.github.io/vegan/
 - TOML configuration
 - Widgets for RSS feed and timezones
 - Multiple boards
+- Basic undo (CTRL+z), redo (CTRL+y)
 
 ** TODO TODO
 - draggable folders

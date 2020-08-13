@@ -66,3 +66,11 @@
 .upload-config svg {
   display: none;
 }
+
+.new-board-button-wrapper svg {
+  display: none;
+}
+
+.new-board-button-wrapper > svg:first-child {
+  display: inline-block;
+}

@@ -71,7 +71,7 @@ const App = () => {
           }),
           !isEditingNewBoardTitle &&
             m(
-              ".pointer",
+              ".new-board-button-wrapper.pointer",
               {
                 onclick: () => {
                   Boards.createBoard();
@@ -157,6 +157,16 @@ const App = () => {
     }
   };
 };
+
+document.addEventListener("keydown", function(event) {
+  if (event.ctrlKey && event.key === "z") {
+    Boards.undo();
+    m.redraw();
+  } else if (event.ctrlKey && event.key === "y") {
+    Boards.redo();
+    m.redraw();
+  }
+});
 
 const mountNode = document.querySelector("#app");
 m.mount(mountNode, App);
