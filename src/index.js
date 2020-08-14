@@ -43,28 +43,29 @@ const App = () => {
                   },
                   onfocusout: () => {
                     newBoardTitle = null;
-                    isEditingNewBoardTitle = false;
-                    Boards.removeBoard(i.id);
+                    if (isEditingNewBoardTitle) {
+                      isEditingNewBoardTitle = false;
+                      Boards.removeBoard(i.id);
+                    }
                   },
                   onkeydown: e => {
                     if (e.key === "Enter") {
                       e.preventDefault();
                       isEditingNewBoardTitle = false;
-                      if (newBoardTitle) {
-                        Boards.updateBoardTitle(newBoardTitle, i.id);
-                        newBoardTitle = null;
-                        Boards.setActive(i.id);
-                        return;
+
+                      if (!newBoardTitle) {
+                        return Boards.removeBoard(i.id);
                       }
-                      Boards.removeBoard(i.id);
-                      return;
+
+                      Boards.updateBoardTitle(newBoardTitle, i.id);
+                      newBoardTitle = null;
+                      return Boards.setActive(i.id);
                     }
 
                     if (e.key === "Escape") {
                       isEditingNewBoardTitle = false;
                       newBoardTitle = null;
-                      Boards.removeBoard(i.id);
-                      return;
+                      return Boards.removeBoard(i.id);
                     }
                   }
                 });
