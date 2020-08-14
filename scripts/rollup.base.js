@@ -1,5 +1,5 @@
 import fs from "fs";
-import babel from "rollup-plugin-babel";
+import babel from "@rollup/plugin-babel";
 import resolve from "rollup-plugin-node-resolve";
 import commonjs from "rollup-plugin-commonjs";
 import pathmodify from "rollup-plugin-pathmodify";
@@ -35,6 +35,7 @@ export const createConfig = ({ includeDepencies }) => ({
   plugins: [
     // Resolve libs in node_modules
     resolve({
+      preferBuiltins: true,
       jsnext: true,
       main: true
     }),
