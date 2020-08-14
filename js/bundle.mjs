@@ -2080,61 +2080,1475 @@ var CSS = {
   appContainer: ".vh-100.pa4.helvetica",
   header: ".flex.items-center.mb4",
   boardTitle: ".f1.mr3",
-  selectFileButton: "input[type=file][name=file][id=file].absolute.overflow-hidden.o-0.w4",
-  selectFileLabel: "label[for=file].gray.hover-black.pointer",
+  navigationWrapper: ".w-100.flex.mb2",
+  uploadConfigContainer: "div.upload-config.relative.w4.h2.ml4",
+  selectFileButton: "input[type=file][name=file][id=file].absolute.overflow-hidden.o-0.top-0.left-0.w-100",
+  selectFileLabel: "label[for=file].gray.hover-black.pointer.absolute.top-0.left-0.w-100",
 
   /** Folder */
   foldersContainer: ".flex",
-  folder: ".db.ba.b--black-10.w5.black.bg-light-yellow.pa2.mr3.shadow-4.br1.overflow-x-auto.relative",
-  folderStyleAttribute: {
-    minWidth: "16rem",
-    maxHeight: "42rem",
-    minHeight: "16rem",
-    height: "min-content"
-  },
+  folder: ".folder.db.ba.b--black-10.w5.black.bg-light-yellow.pa2.mr3.shadow-4.br1.overflow-x-auto.relative",
   folderHeader: ".db.flex.justify-between",
-  folderTitle: ".w-90.med-gray.f4",
+  folderTitle: ".w-90.med-gray.f4.break-word",
   folderCardsWrapper: ".db.w-100",
   folderCard: "a.db.ba.b--black-10.bg-washed-yellow.mv1.pl2.pt2.pr3.pb2.link.black.hide-child",
   folderCardPlaceholder: ".db.ba.b--dashed.bw1.b--black-10.mt2.pa2.tc.black-30.pointer.f5",
-  folderPlaceholder: ".h5.db.ba.b--dashed.bw1.b--black-10.w5.br1.mr3.flex.bg-washed-yellow.justify-center.items-center",
+  folderPlaceholder: ".min-w5.h5.db.ba.b--dashed.bw1.b--black-10.w5.br1.mr3.flex.bg-washed-yellow.justify-center.items-center",
   inputField: "textarea.bn.mb2.db.w-90.bg-light-yellow.f4.outline-0",
+  boardTitleInputField: "textarea.bn.f1.mr3.bg-washed-yellow",
+  navigationTitleInputField: "textarea.bn.bg-washed-yellow",
   createFolderButton: "div.br-100.bg-moon-gray.white.w3.h3.flex.justify-center.items-center.f1.pointer",
 
   /** Icons */
   iconRss: "i[data-feather=rss]",
-  iconExternalLink: "i[data-feather=external-link].child.relative",
-  iconExternalLinkStyleAttribute: {
-    width: "15px",
-    height: "15px",
-    top: "2px",
-    left: "2px"
-  },
+  iconExternalLink: "i[data-feather=external-link].child.relative.icon-external-link",
   iconClock: "i[data-feather=clock]",
   iconTrash: "i[data-feather=trash-2].black.child",
   iconPlus: "i[data-feather=plus-circle].moon-gray.grow.hover-gray",
-  iconPlusStyleAttribute: {
-    width: "60px",
-    height: "60px"
-  },
-  iconX: "i[data-feather=x].child.black.absolute",
-  iconXStyleAttribute: {
-    width: "1rem",
-    height: "1rem",
-    right: "5px",
-    top: "10px"
-  },
-  iconFrown: "i[data-feather=frown].mt4.mb1",
-  iconFrownStyleAttribute: {
-    width: "3rem",
-    height: "3rem"
-  },
+  iconX: "i[data-feather=x].child.black.absolute.icon-remove",
+  iconMove: "i[data-feather=move].child.black.absolute.icon-move",
+  iconFrown: "i[data-feather=frown].mt4.mb1.icon-frown"
+};
 
-  /** various */
-  wordWrapStyleAttribute: {
-    wordBreak: "break-word"
+function _isPlaceholder(a) {
+  return a != null && typeof a === 'object' && a['@@functional/placeholder'] === true;
+}
+
+/**
+ * Optimized internal one-arity curry function.
+ *
+ * @private
+ * @category Function
+ * @param {Function} fn The function to curry.
+ * @return {Function} The curried function.
+ */
+
+function _curry1(fn) {
+  return function f1(a) {
+    if (arguments.length === 0 || _isPlaceholder(a)) {
+      return f1;
+    } else {
+      return fn.apply(this, arguments);
+    }
+  };
+}
+
+/**
+ * Optimized internal two-arity curry function.
+ *
+ * @private
+ * @category Function
+ * @param {Function} fn The function to curry.
+ * @return {Function} The curried function.
+ */
+
+function _curry2(fn) {
+  return function f2(a, b) {
+    switch (arguments.length) {
+      case 0:
+        return f2;
+
+      case 1:
+        return _isPlaceholder(a) ? f2 : _curry1(function (_b) {
+          return fn(a, _b);
+        });
+
+      default:
+        return _isPlaceholder(a) && _isPlaceholder(b) ? f2 : _isPlaceholder(a) ? _curry1(function (_a) {
+          return fn(_a, b);
+        }) : _isPlaceholder(b) ? _curry1(function (_b) {
+          return fn(a, _b);
+        }) : fn(a, b);
+    }
+  };
+}
+
+function _arity(n, fn) {
+  /* eslint-disable no-unused-vars */
+  switch (n) {
+    case 0:
+      return function () {
+        return fn.apply(this, arguments);
+      };
+
+    case 1:
+      return function (a0) {
+        return fn.apply(this, arguments);
+      };
+
+    case 2:
+      return function (a0, a1) {
+        return fn.apply(this, arguments);
+      };
+
+    case 3:
+      return function (a0, a1, a2) {
+        return fn.apply(this, arguments);
+      };
+
+    case 4:
+      return function (a0, a1, a2, a3) {
+        return fn.apply(this, arguments);
+      };
+
+    case 5:
+      return function (a0, a1, a2, a3, a4) {
+        return fn.apply(this, arguments);
+      };
+
+    case 6:
+      return function (a0, a1, a2, a3, a4, a5) {
+        return fn.apply(this, arguments);
+      };
+
+    case 7:
+      return function (a0, a1, a2, a3, a4, a5, a6) {
+        return fn.apply(this, arguments);
+      };
+
+    case 8:
+      return function (a0, a1, a2, a3, a4, a5, a6, a7) {
+        return fn.apply(this, arguments);
+      };
+
+    case 9:
+      return function (a0, a1, a2, a3, a4, a5, a6, a7, a8) {
+        return fn.apply(this, arguments);
+      };
+
+    case 10:
+      return function (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) {
+        return fn.apply(this, arguments);
+      };
+
+    default:
+      throw new Error('First argument to _arity must be a non-negative integer no greater than ten');
+  }
+}
+
+/**
+ * Internal curryN function.
+ *
+ * @private
+ * @category Function
+ * @param {Number} length The arity of the curried function.
+ * @param {Array} received An array of arguments received thus far.
+ * @param {Function} fn The function to curry.
+ * @return {Function} The curried function.
+ */
+
+function _curryN(length, received, fn) {
+  return function () {
+    var combined = [];
+    var argsIdx = 0;
+    var left = length;
+    var combinedIdx = 0;
+
+    while (combinedIdx < received.length || argsIdx < arguments.length) {
+      var result;
+
+      if (combinedIdx < received.length && (!_isPlaceholder(received[combinedIdx]) || argsIdx >= arguments.length)) {
+        result = received[combinedIdx];
+      } else {
+        result = arguments[argsIdx];
+        argsIdx += 1;
+      }
+
+      combined[combinedIdx] = result;
+
+      if (!_isPlaceholder(result)) {
+        left -= 1;
+      }
+
+      combinedIdx += 1;
+    }
+
+    return left <= 0 ? fn.apply(this, combined) : _arity(left, _curryN(length, combined, fn));
+  };
+}
+
+/**
+ * Returns a curried equivalent of the provided function, with the specified
+ * arity. The curried function has two unusual capabilities. First, its
+ * arguments needn't be provided one at a time. If `g` is `R.curryN(3, f)`, the
+ * following are equivalent:
+ *
+ *   - `g(1)(2)(3)`
+ *   - `g(1)(2, 3)`
+ *   - `g(1, 2)(3)`
+ *   - `g(1, 2, 3)`
+ *
+ * Secondly, the special placeholder value [`R.__`](#__) may be used to specify
+ * "gaps", allowing partial application of any combination of arguments,
+ * regardless of their positions. If `g` is as above and `_` is [`R.__`](#__),
+ * the following are equivalent:
+ *
+ *   - `g(1, 2, 3)`
+ *   - `g(_, 2, 3)(1)`
+ *   - `g(_, _, 3)(1)(2)`
+ *   - `g(_, _, 3)(1, 2)`
+ *   - `g(_, 2)(1)(3)`
+ *   - `g(_, 2)(1, 3)`
+ *   - `g(_, 2)(_, 3)(1)`
+ *
+ * @func
+ * @memberOf R
+ * @since v0.5.0
+ * @category Function
+ * @sig Number -> (* -> a) -> (* -> a)
+ * @param {Number} length The arity for the returned function.
+ * @param {Function} fn The function to curry.
+ * @return {Function} A new, curried function.
+ * @see R.curry
+ * @example
+ *
+ *      const sumArgs = (...args) => R.sum(args);
+ *
+ *      const curriedAddFourNumbers = R.curryN(4, sumArgs);
+ *      const f = curriedAddFourNumbers(1, 2);
+ *      const g = f(3);
+ *      g(4); //=> 10
+ */
+
+var curryN =
+/*#__PURE__*/
+_curry2(function curryN(length, fn) {
+  if (length === 1) {
+    return _curry1(fn);
+  }
+
+  return _arity(length, _curryN(length, [], fn));
+});
+
+/**
+ * Optimized internal three-arity curry function.
+ *
+ * @private
+ * @category Function
+ * @param {Function} fn The function to curry.
+ * @return {Function} The curried function.
+ */
+
+function _curry3(fn) {
+  return function f3(a, b, c) {
+    switch (arguments.length) {
+      case 0:
+        return f3;
+
+      case 1:
+        return _isPlaceholder(a) ? f3 : _curry2(function (_b, _c) {
+          return fn(a, _b, _c);
+        });
+
+      case 2:
+        return _isPlaceholder(a) && _isPlaceholder(b) ? f3 : _isPlaceholder(a) ? _curry2(function (_a, _c) {
+          return fn(_a, b, _c);
+        }) : _isPlaceholder(b) ? _curry2(function (_b, _c) {
+          return fn(a, _b, _c);
+        }) : _curry1(function (_c) {
+          return fn(a, b, _c);
+        });
+
+      default:
+        return _isPlaceholder(a) && _isPlaceholder(b) && _isPlaceholder(c) ? f3 : _isPlaceholder(a) && _isPlaceholder(b) ? _curry2(function (_a, _b) {
+          return fn(_a, _b, c);
+        }) : _isPlaceholder(a) && _isPlaceholder(c) ? _curry2(function (_a, _c) {
+          return fn(_a, b, _c);
+        }) : _isPlaceholder(b) && _isPlaceholder(c) ? _curry2(function (_b, _c) {
+          return fn(a, _b, _c);
+        }) : _isPlaceholder(a) ? _curry1(function (_a) {
+          return fn(_a, b, c);
+        }) : _isPlaceholder(b) ? _curry1(function (_b) {
+          return fn(a, _b, c);
+        }) : _isPlaceholder(c) ? _curry1(function (_c) {
+          return fn(a, b, _c);
+        }) : fn(a, b, c);
+    }
+  };
+}
+
+/**
+ * Tests whether or not an object is an array.
+ *
+ * @private
+ * @param {*} val The object to test.
+ * @return {Boolean} `true` if `val` is an array, `false` otherwise.
+ * @example
+ *
+ *      _isArray([]); //=> true
+ *      _isArray(null); //=> false
+ *      _isArray({}); //=> false
+ */
+var _isArray = Array.isArray || function _isArray(val) {
+  return val != null && val.length >= 0 && Object.prototype.toString.call(val) === '[object Array]';
+};
+
+function _isTransformer(obj) {
+  return obj != null && typeof obj['@@transducer/step'] === 'function';
+}
+
+/**
+ * Returns a function that dispatches with different strategies based on the
+ * object in list position (last argument). If it is an array, executes [fn].
+ * Otherwise, if it has a function with one of the given method names, it will
+ * execute that function (functor case). Otherwise, if it is a transformer,
+ * uses transducer [xf] to return a new transformer (transducer case).
+ * Otherwise, it will default to executing [fn].
+ *
+ * @private
+ * @param {Array} methodNames properties to check for a custom implementation
+ * @param {Function} xf transducer to initialize if object is transformer
+ * @param {Function} fn default ramda implementation
+ * @return {Function} A function that dispatches on object in list position
+ */
+
+function _dispatchable(methodNames, xf, fn) {
+  return function () {
+    if (arguments.length === 0) {
+      return fn();
+    }
+
+    var args = Array.prototype.slice.call(arguments, 0);
+    var obj = args.pop();
+
+    if (!_isArray(obj)) {
+      var idx = 0;
+
+      while (idx < methodNames.length) {
+        if (typeof obj[methodNames[idx]] === 'function') {
+          return obj[methodNames[idx]].apply(obj, args);
+        }
+
+        idx += 1;
+      }
+
+      if (_isTransformer(obj)) {
+        var transducer = xf.apply(null, args);
+        return transducer(obj);
+      }
+    }
+
+    return fn.apply(this, arguments);
+  };
+}
+
+var _xfBase = {
+  init: function () {
+    return this.xf['@@transducer/init']();
+  },
+  result: function (result) {
+    return this.xf['@@transducer/result'](result);
   }
 };
+
+function _map(fn, functor) {
+  var idx = 0;
+  var len = functor.length;
+  var result = Array(len);
+
+  while (idx < len) {
+    result[idx] = fn(functor[idx]);
+    idx += 1;
+  }
+
+  return result;
+}
+
+function _isString(x) {
+  return Object.prototype.toString.call(x) === '[object String]';
+}
+
+/**
+ * Tests whether or not an object is similar to an array.
+ *
+ * @private
+ * @category Type
+ * @category List
+ * @sig * -> Boolean
+ * @param {*} x The object to test.
+ * @return {Boolean} `true` if `x` has a numeric length property and extreme indices defined; `false` otherwise.
+ * @example
+ *
+ *      _isArrayLike([]); //=> true
+ *      _isArrayLike(true); //=> false
+ *      _isArrayLike({}); //=> false
+ *      _isArrayLike({length: 10}); //=> false
+ *      _isArrayLike({0: 'zero', 9: 'nine', length: 10}); //=> true
+ */
+
+var _isArrayLike =
+/*#__PURE__*/
+_curry1(function isArrayLike(x) {
+  if (_isArray(x)) {
+    return true;
+  }
+
+  if (!x) {
+    return false;
+  }
+
+  if (typeof x !== 'object') {
+    return false;
+  }
+
+  if (_isString(x)) {
+    return false;
+  }
+
+  if (x.nodeType === 1) {
+    return !!x.length;
+  }
+
+  if (x.length === 0) {
+    return true;
+  }
+
+  if (x.length > 0) {
+    return x.hasOwnProperty(0) && x.hasOwnProperty(x.length - 1);
+  }
+
+  return false;
+});
+
+var XWrap =
+/*#__PURE__*/
+function () {
+  function XWrap(fn) {
+    this.f = fn;
+  }
+
+  XWrap.prototype['@@transducer/init'] = function () {
+    throw new Error('init not implemented on XWrap');
+  };
+
+  XWrap.prototype['@@transducer/result'] = function (acc) {
+    return acc;
+  };
+
+  XWrap.prototype['@@transducer/step'] = function (acc, x) {
+    return this.f(acc, x);
+  };
+
+  return XWrap;
+}();
+
+function _xwrap(fn) {
+  return new XWrap(fn);
+}
+
+/**
+ * Creates a function that is bound to a context.
+ * Note: `R.bind` does not provide the additional argument-binding capabilities of
+ * [Function.prototype.bind](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind).
+ *
+ * @func
+ * @memberOf R
+ * @since v0.6.0
+ * @category Function
+ * @category Object
+ * @sig (* -> *) -> {*} -> (* -> *)
+ * @param {Function} fn The function to bind to context
+ * @param {Object} thisObj The context to bind `fn` to
+ * @return {Function} A function that will execute in the context of `thisObj`.
+ * @see R.partial
+ * @example
+ *
+ *      const log = R.bind(console.log, console);
+ *      R.pipe(R.assoc('a', 2), R.tap(log), R.assoc('a', 3))({a: 1}); //=> {a: 3}
+ *      // logs {a: 2}
+ * @symb R.bind(f, o)(a, b) = f.call(o, a, b)
+ */
+
+var bind =
+/*#__PURE__*/
+_curry2(function bind(fn, thisObj) {
+  return _arity(fn.length, function () {
+    return fn.apply(thisObj, arguments);
+  });
+});
+
+function _arrayReduce(xf, acc, list) {
+  var idx = 0;
+  var len = list.length;
+
+  while (idx < len) {
+    acc = xf['@@transducer/step'](acc, list[idx]);
+
+    if (acc && acc['@@transducer/reduced']) {
+      acc = acc['@@transducer/value'];
+      break;
+    }
+
+    idx += 1;
+  }
+
+  return xf['@@transducer/result'](acc);
+}
+
+function _iterableReduce(xf, acc, iter) {
+  var step = iter.next();
+
+  while (!step.done) {
+    acc = xf['@@transducer/step'](acc, step.value);
+
+    if (acc && acc['@@transducer/reduced']) {
+      acc = acc['@@transducer/value'];
+      break;
+    }
+
+    step = iter.next();
+  }
+
+  return xf['@@transducer/result'](acc);
+}
+
+function _methodReduce(xf, acc, obj, methodName) {
+  return xf['@@transducer/result'](obj[methodName](bind(xf['@@transducer/step'], xf), acc));
+}
+
+var symIterator = typeof Symbol !== 'undefined' ? Symbol.iterator : '@@iterator';
+function _reduce(fn, acc, list) {
+  if (typeof fn === 'function') {
+    fn = _xwrap(fn);
+  }
+
+  if (_isArrayLike(list)) {
+    return _arrayReduce(fn, acc, list);
+  }
+
+  if (typeof list['fantasy-land/reduce'] === 'function') {
+    return _methodReduce(fn, acc, list, 'fantasy-land/reduce');
+  }
+
+  if (list[symIterator] != null) {
+    return _iterableReduce(fn, acc, list[symIterator]());
+  }
+
+  if (typeof list.next === 'function') {
+    return _iterableReduce(fn, acc, list);
+  }
+
+  if (typeof list.reduce === 'function') {
+    return _methodReduce(fn, acc, list, 'reduce');
+  }
+
+  throw new TypeError('reduce: list must be array or iterable');
+}
+
+var XMap =
+/*#__PURE__*/
+function () {
+  function XMap(f, xf) {
+    this.xf = xf;
+    this.f = f;
+  }
+
+  XMap.prototype['@@transducer/init'] = _xfBase.init;
+  XMap.prototype['@@transducer/result'] = _xfBase.result;
+
+  XMap.prototype['@@transducer/step'] = function (result, input) {
+    return this.xf['@@transducer/step'](result, this.f(input));
+  };
+
+  return XMap;
+}();
+
+var _xmap =
+/*#__PURE__*/
+_curry2(function _xmap(f, xf) {
+  return new XMap(f, xf);
+});
+
+function _has(prop, obj) {
+  return Object.prototype.hasOwnProperty.call(obj, prop);
+}
+
+var toString = Object.prototype.toString;
+
+var _isArguments =
+/*#__PURE__*/
+function () {
+  return toString.call(arguments) === '[object Arguments]' ? function _isArguments(x) {
+    return toString.call(x) === '[object Arguments]';
+  } : function _isArguments(x) {
+    return _has('callee', x);
+  };
+}();
+
+var hasEnumBug = !
+/*#__PURE__*/
+{
+  toString: null
+}.propertyIsEnumerable('toString');
+var nonEnumerableProps = ['constructor', 'valueOf', 'isPrototypeOf', 'toString', 'propertyIsEnumerable', 'hasOwnProperty', 'toLocaleString']; // Safari bug
+
+var hasArgsEnumBug =
+/*#__PURE__*/
+function () {
+
+  return arguments.propertyIsEnumerable('length');
+}();
+
+var contains = function contains(list, item) {
+  var idx = 0;
+
+  while (idx < list.length) {
+    if (list[idx] === item) {
+      return true;
+    }
+
+    idx += 1;
+  }
+
+  return false;
+};
+/**
+ * Returns a list containing the names of all the enumerable own properties of
+ * the supplied object.
+ * Note that the order of the output array is not guaranteed to be consistent
+ * across different JS platforms.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Object
+ * @sig {k: v} -> [k]
+ * @param {Object} obj The object to extract properties from
+ * @return {Array} An array of the object's own properties.
+ * @see R.keysIn, R.values
+ * @example
+ *
+ *      R.keys({a: 1, b: 2, c: 3}); //=> ['a', 'b', 'c']
+ */
+
+
+var keys = typeof Object.keys === 'function' && !hasArgsEnumBug ?
+/*#__PURE__*/
+_curry1(function keys(obj) {
+  return Object(obj) !== obj ? [] : Object.keys(obj);
+}) :
+/*#__PURE__*/
+_curry1(function keys(obj) {
+  if (Object(obj) !== obj) {
+    return [];
+  }
+
+  var prop, nIdx;
+  var ks = [];
+
+  var checkArgsLength = hasArgsEnumBug && _isArguments(obj);
+
+  for (prop in obj) {
+    if (_has(prop, obj) && (!checkArgsLength || prop !== 'length')) {
+      ks[ks.length] = prop;
+    }
+  }
+
+  if (hasEnumBug) {
+    nIdx = nonEnumerableProps.length - 1;
+
+    while (nIdx >= 0) {
+      prop = nonEnumerableProps[nIdx];
+
+      if (_has(prop, obj) && !contains(ks, prop)) {
+        ks[ks.length] = prop;
+      }
+
+      nIdx -= 1;
+    }
+  }
+
+  return ks;
+});
+
+/**
+ * Takes a function and
+ * a [functor](https://github.com/fantasyland/fantasy-land#functor),
+ * applies the function to each of the functor's values, and returns
+ * a functor of the same shape.
+ *
+ * Ramda provides suitable `map` implementations for `Array` and `Object`,
+ * so this function may be applied to `[1, 2, 3]` or `{x: 1, y: 2, z: 3}`.
+ *
+ * Dispatches to the `map` method of the second argument, if present.
+ *
+ * Acts as a transducer if a transformer is given in list position.
+ *
+ * Also treats functions as functors and will compose them together.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig Functor f => (a -> b) -> f a -> f b
+ * @param {Function} fn The function to be called on every element of the input `list`.
+ * @param {Array} list The list to be iterated over.
+ * @return {Array} The new list.
+ * @see R.transduce, R.addIndex
+ * @example
+ *
+ *      const double = x => x * 2;
+ *
+ *      R.map(double, [1, 2, 3]); //=> [2, 4, 6]
+ *
+ *      R.map(double, {x: 1, y: 2, z: 3}); //=> {x: 2, y: 4, z: 6}
+ * @symb R.map(f, [a, b]) = [f(a), f(b)]
+ * @symb R.map(f, { x: a, y: b }) = { x: f(a), y: f(b) }
+ * @symb R.map(f, functor_o) = functor_o.map(f)
+ */
+
+var map =
+/*#__PURE__*/
+_curry2(
+/*#__PURE__*/
+_dispatchable(['fantasy-land/map', 'map'], _xmap, function map(fn, functor) {
+  switch (Object.prototype.toString.call(functor)) {
+    case '[object Function]':
+      return curryN(functor.length, function () {
+        return fn.call(this, functor.apply(this, arguments));
+      });
+
+    case '[object Object]':
+      return _reduce(function (acc, key) {
+        acc[key] = fn(functor[key]);
+        return acc;
+      }, {}, keys(functor));
+
+    default:
+      return _map(fn, functor);
+  }
+}));
+
+/**
+ * Determine if the passed argument is an integer.
+ *
+ * @private
+ * @param {*} n
+ * @category Type
+ * @return {Boolean}
+ */
+var _isInteger = Number.isInteger || function _isInteger(n) {
+  return n << 0 === n;
+};
+
+/**
+ * Returns the nth element of the given list or string. If n is negative the
+ * element at index length + n is returned.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category List
+ * @sig Number -> [a] -> a | Undefined
+ * @sig Number -> String -> String
+ * @param {Number} offset
+ * @param {*} list
+ * @return {*}
+ * @example
+ *
+ *      const list = ['foo', 'bar', 'baz', 'quux'];
+ *      R.nth(1, list); //=> 'bar'
+ *      R.nth(-1, list); //=> 'quux'
+ *      R.nth(-99, list); //=> undefined
+ *
+ *      R.nth(2, 'abc'); //=> 'c'
+ *      R.nth(3, 'abc'); //=> ''
+ * @symb R.nth(-1, [a, b, c]) = c
+ * @symb R.nth(0, [a, b, c]) = a
+ * @symb R.nth(1, [a, b, c]) = b
+ */
+
+var nth =
+/*#__PURE__*/
+_curry2(function nth(offset, list) {
+  var idx = offset < 0 ? list.length + offset : offset;
+  return _isString(list) ? list.charAt(idx) : list[idx];
+});
+
+/**
+ * Retrieves the values at given paths of an object.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.27.1
+ * @category Object
+ * @typedefn Idx = [String | Int]
+ * @sig [Idx] -> {a} -> [a | Undefined]
+ * @param {Array} pathsArray The array of paths to be fetched.
+ * @param {Object} obj The object to retrieve the nested properties from.
+ * @return {Array} A list consisting of values at paths specified by "pathsArray".
+ * @see R.path
+ * @example
+ *
+ *      R.paths([['a', 'b'], ['p', 0, 'q']], {a: {b: 2}, p: [{q: 3}]}); //=> [2, 3]
+ *      R.paths([['a', 'b'], ['p', 'r']], {a: {b: 2}, p: [{q: 3}]}); //=> [2, undefined]
+ */
+
+var paths =
+/*#__PURE__*/
+_curry2(function paths(pathsArray, obj) {
+  return pathsArray.map(function (paths) {
+    var val = obj;
+    var idx = 0;
+    var p;
+
+    while (idx < paths.length) {
+      if (val == null) {
+        return;
+      }
+
+      p = paths[idx];
+      val = _isInteger(p) ? nth(p, val) : val[p];
+      idx += 1;
+    }
+
+    return val;
+  });
+});
+
+/**
+ * Retrieve the value at a given path.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.2.0
+ * @category Object
+ * @typedefn Idx = String | Int
+ * @sig [Idx] -> {a} -> a | Undefined
+ * @param {Array} path The path to use.
+ * @param {Object} obj The object to retrieve the nested property from.
+ * @return {*} The data at `path`.
+ * @see R.prop, R.nth
+ * @example
+ *
+ *      R.path(['a', 'b'], {a: {b: 2}}); //=> 2
+ *      R.path(['a', 'b'], {c: {b: 2}}); //=> undefined
+ *      R.path(['a', 'b', 0], {a: {b: [1, 2, 3]}}); //=> 1
+ *      R.path(['a', 'b', -2], {a: {b: [1, 2, 3]}}); //=> 2
+ */
+
+var path =
+/*#__PURE__*/
+_curry2(function path(pathAr, obj) {
+  return paths([pathAr], obj)[0];
+});
+
+/**
+ * Returns a function that when supplied an object returns the indicated
+ * property of that object, if it exists.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Object
+ * @typedefn Idx = String | Int
+ * @sig Idx -> {s: a} -> a | Undefined
+ * @param {String|Number} p The property name or array index
+ * @param {Object} obj The object to query
+ * @return {*} The value at `obj.p`.
+ * @see R.path, R.nth
+ * @example
+ *
+ *      R.prop('x', {x: 100}); //=> 100
+ *      R.prop('x', {}); //=> undefined
+ *      R.prop(0, [100]); //=> 100
+ *      R.compose(R.inc, R.prop('x'))({ x: 3 }) //=> 4
+ */
+
+var prop =
+/*#__PURE__*/
+_curry2(function prop(p, obj) {
+  return path([p], obj);
+});
+
+/**
+ * Returns a function that always returns the given value. Note that for
+ * non-primitives the value returned is a reference to the original value.
+ *
+ * This function is known as `const`, `constant`, or `K` (for K combinator) in
+ * other languages and libraries.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Function
+ * @sig a -> (* -> a)
+ * @param {*} val The value to wrap in a function
+ * @return {Function} A Function :: * -> val.
+ * @example
+ *
+ *      const t = R.always('Tee');
+ *      t(); //=> 'Tee'
+ */
+
+var always =
+/*#__PURE__*/
+_curry1(function always(val) {
+  return function () {
+    return val;
+  };
+});
+
+/**
+ * Returns a list of all the enumerable own properties of the supplied object.
+ * Note that the order of the output array is not guaranteed across different
+ * JS platforms.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Object
+ * @sig {k: v} -> [v]
+ * @param {Object} obj The object to extract values from
+ * @return {Array} An array of the values of the object's own properties.
+ * @see R.valuesIn, R.keys
+ * @example
+ *
+ *      R.values({a: 1, b: 2, c: 3}); //=> [1, 2, 3]
+ */
+
+var values =
+/*#__PURE__*/
+_curry1(function values(obj) {
+  var props = keys(obj);
+  var len = props.length;
+  var vals = [];
+  var idx = 0;
+
+  while (idx < len) {
+    vals[idx] = obj[props[idx]];
+    idx += 1;
+  }
+
+  return vals;
+});
+
+/**
+ * Makes a shallow clone of an object, setting or overriding the specified
+ * property with the given value. Note that this copies and flattens prototype
+ * properties onto the new object as well. All non-primitive properties are
+ * copied by reference.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.8.0
+ * @category Object
+ * @sig String -> a -> {k: v} -> {k: v}
+ * @param {String} prop The property name to set
+ * @param {*} val The new value
+ * @param {Object} obj The object to clone
+ * @return {Object} A new object equivalent to the original except for the changed property.
+ * @see R.dissoc, R.pick
+ * @example
+ *
+ *      R.assoc('c', 3, {a: 1, b: 2}); //=> {a: 1, b: 2, c: 3}
+ */
+
+var assoc =
+/*#__PURE__*/
+_curry3(function assoc(prop, val, obj) {
+  var result = {};
+
+  for (var p in obj) {
+    result[p] = obj[p];
+  }
+
+  result[prop] = val;
+  return result;
+});
+
+/**
+ * Checks if the input value is `null` or `undefined`.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.9.0
+ * @category Type
+ * @sig * -> Boolean
+ * @param {*} x The value to test.
+ * @return {Boolean} `true` if `x` is `undefined` or `null`, otherwise `false`.
+ * @example
+ *
+ *      R.isNil(null); //=> true
+ *      R.isNil(undefined); //=> true
+ *      R.isNil(0); //=> false
+ *      R.isNil([]); //=> false
+ */
+
+var isNil =
+/*#__PURE__*/
+_curry1(function isNil(x) {
+  return x == null;
+});
+
+/**
+ * Makes a shallow clone of an object, setting or overriding the nodes required
+ * to create the given path, and placing the specific value at the tail end of
+ * that path. Note that this copies and flattens prototype properties onto the
+ * new object as well. All non-primitive properties are copied by reference.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.8.0
+ * @category Object
+ * @typedefn Idx = String | Int
+ * @sig [Idx] -> a -> {a} -> {a}
+ * @param {Array} path the path to set
+ * @param {*} val The new value
+ * @param {Object} obj The object to clone
+ * @return {Object} A new object equivalent to the original except along the specified path.
+ * @see R.dissocPath
+ * @example
+ *
+ *      R.assocPath(['a', 'b', 'c'], 42, {a: {b: {c: 0}}}); //=> {a: {b: {c: 42}}}
+ *
+ *      // Any missing or non-object keys in path will be overridden
+ *      R.assocPath(['a', 'b', 'c'], 42, {a: 5}); //=> {a: {b: {c: 42}}}
+ */
+
+var assocPath =
+/*#__PURE__*/
+_curry3(function assocPath(path, val, obj) {
+  if (path.length === 0) {
+    return val;
+  }
+
+  var idx = path[0];
+
+  if (path.length > 1) {
+    var nextObj = !isNil(obj) && _has(idx, obj) ? obj[idx] : _isInteger(path[1]) ? [] : {};
+    val = assocPath(Array.prototype.slice.call(path, 1), val, nextObj);
+  }
+
+  if (_isInteger(idx) && _isArray(obj)) {
+    var arr = [].concat(obj);
+    arr[idx] = val;
+    return arr;
+  } else {
+    return assoc(idx, val, obj);
+  }
+});
+
+function _cloneRegExp(pattern) {
+  return new RegExp(pattern.source, (pattern.global ? 'g' : '') + (pattern.ignoreCase ? 'i' : '') + (pattern.multiline ? 'm' : '') + (pattern.sticky ? 'y' : '') + (pattern.unicode ? 'u' : ''));
+}
+
+/**
+ * Gives a single-word string description of the (native) type of a value,
+ * returning such answers as 'Object', 'Number', 'Array', or 'Null'. Does not
+ * attempt to distinguish user Object types any further, reporting them all as
+ * 'Object'.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.8.0
+ * @category Type
+ * @sig (* -> {*}) -> String
+ * @param {*} val The value to test
+ * @return {String}
+ * @example
+ *
+ *      R.type({}); //=> "Object"
+ *      R.type(1); //=> "Number"
+ *      R.type(false); //=> "Boolean"
+ *      R.type('s'); //=> "String"
+ *      R.type(null); //=> "Null"
+ *      R.type([]); //=> "Array"
+ *      R.type(/[A-z]/); //=> "RegExp"
+ *      R.type(() => {}); //=> "Function"
+ *      R.type(undefined); //=> "Undefined"
+ */
+
+var type =
+/*#__PURE__*/
+_curry1(function type(val) {
+  return val === null ? 'Null' : val === undefined ? 'Undefined' : Object.prototype.toString.call(val).slice(8, -1);
+});
+
+/**
+ * Copies an object.
+ *
+ * @private
+ * @param {*} value The value to be copied
+ * @param {Array} refFrom Array containing the source references
+ * @param {Array} refTo Array containing the copied source references
+ * @param {Boolean} deep Whether or not to perform deep cloning.
+ * @return {*} The copied value.
+ */
+
+function _clone(value, refFrom, refTo, deep) {
+  var copy = function copy(copiedValue) {
+    var len = refFrom.length;
+    var idx = 0;
+
+    while (idx < len) {
+      if (value === refFrom[idx]) {
+        return refTo[idx];
+      }
+
+      idx += 1;
+    }
+
+    refFrom[idx + 1] = value;
+    refTo[idx + 1] = copiedValue;
+
+    for (var key in value) {
+      copiedValue[key] = deep ? _clone(value[key], refFrom, refTo, true) : value[key];
+    }
+
+    return copiedValue;
+  };
+
+  switch (type(value)) {
+    case 'Object':
+      return copy({});
+
+    case 'Array':
+      return copy([]);
+
+    case 'Date':
+      return new Date(value.valueOf());
+
+    case 'RegExp':
+      return _cloneRegExp(value);
+
+    default:
+      return value;
+  }
+}
+
+/**
+ * Creates a deep copy of the value which may contain (nested) `Array`s and
+ * `Object`s, `Number`s, `String`s, `Boolean`s and `Date`s. `Function`s are
+ * assigned by reference rather than copied
+ *
+ * Dispatches to a `clone` method if present.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Object
+ * @sig {*} -> {*}
+ * @param {*} value The object or array to clone
+ * @return {*} A deeply cloned copy of `val`
+ * @example
+ *
+ *      const objects = [{}, {}, {}];
+ *      const objectsClone = R.clone(objects);
+ *      objects === objectsClone; //=> false
+ *      objects[0] === objectsClone[0]; //=> false
+ */
+
+var clone =
+/*#__PURE__*/
+_curry1(function clone(value) {
+  return value != null && typeof value.clone === 'function' ? value.clone() : _clone(value, [], [], true);
+});
+
+/**
+ * Returns a new object that does not contain a `prop` property.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.10.0
+ * @category Object
+ * @sig String -> {k: v} -> {k: v}
+ * @param {String} prop The name of the property to dissociate
+ * @param {Object} obj The object to clone
+ * @return {Object} A new object equivalent to the original but without the specified property
+ * @see R.assoc, R.omit
+ * @example
+ *
+ *      R.dissoc('b', {a: 1, b: 2, c: 3}); //=> {a: 1, c: 3}
+ */
+
+var dissoc =
+/*#__PURE__*/
+_curry2(function dissoc(prop, obj) {
+  var result = {};
+
+  for (var p in obj) {
+    result[p] = obj[p];
+  }
+
+  delete result[prop];
+  return result;
+});
+
+function _objectAssign(target) {
+  if (target == null) {
+    throw new TypeError('Cannot convert undefined or null to object');
+  }
+
+  var output = Object(target);
+  var idx = 1;
+  var length = arguments.length;
+
+  while (idx < length) {
+    var source = arguments[idx];
+
+    if (source != null) {
+      for (var nextKey in source) {
+        if (_has(nextKey, source)) {
+          output[nextKey] = source[nextKey];
+        }
+      }
+    }
+
+    idx += 1;
+  }
+
+  return output;
+}
+
+var _objectAssign$1 = typeof Object.assign === 'function' ? Object.assign : _objectAssign;
+
+/**
+ * Returns a lens for the given getter and setter functions. The getter "gets"
+ * the value of the focus; the setter "sets" the value of the focus. The setter
+ * should not mutate the data structure.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.8.0
+ * @category Object
+ * @typedefn Lens s a = Functor f => (a -> f a) -> s -> f s
+ * @sig (s -> a) -> ((a, s) -> s) -> Lens s a
+ * @param {Function} getter
+ * @param {Function} setter
+ * @return {Lens}
+ * @see R.view, R.set, R.over, R.lensIndex, R.lensProp
+ * @example
+ *
+ *      const xLens = R.lens(R.prop('x'), R.assoc('x'));
+ *
+ *      R.view(xLens, {x: 1, y: 2});            //=> 1
+ *      R.set(xLens, 4, {x: 1, y: 2});          //=> {x: 4, y: 2}
+ *      R.over(xLens, R.negate, {x: 1, y: 2});  //=> {x: -1, y: 2}
+ */
+
+var lens =
+/*#__PURE__*/
+_curry2(function lens(getter, setter) {
+  return function (toFunctorFn) {
+    return function (target) {
+      return map(function (focus) {
+        return setter(focus, target);
+      }, toFunctorFn(getter(target)));
+    };
+  };
+});
+
+/**
+ * Returns a lens whose focus is the specified path.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.19.0
+ * @category Object
+ * @typedefn Idx = String | Int
+ * @typedefn Lens s a = Functor f => (a -> f a) -> s -> f s
+ * @sig [Idx] -> Lens s a
+ * @param {Array} path The path to use.
+ * @return {Lens}
+ * @see R.view, R.set, R.over
+ * @example
+ *
+ *      const xHeadYLens = R.lensPath(['x', 0, 'y']);
+ *
+ *      R.view(xHeadYLens, {x: [{y: 2, z: 3}, {y: 4, z: 5}]});
+ *      //=> 2
+ *      R.set(xHeadYLens, 1, {x: [{y: 2, z: 3}, {y: 4, z: 5}]});
+ *      //=> {x: [{y: 1, z: 3}, {y: 4, z: 5}]}
+ *      R.over(xHeadYLens, R.negate, {x: [{y: 2, z: 3}, {y: 4, z: 5}]});
+ *      //=> {x: [{y: -2, z: 3}, {y: 4, z: 5}]}
+ */
+
+var lensPath =
+/*#__PURE__*/
+_curry1(function lensPath(p) {
+  return lens(path(p), assocPath(p));
+});
+
+/**
+ * Create a new object with the own properties of the first object merged with
+ * the own properties of the second object. If a key exists in both objects,
+ * the value from the second object will be used.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Object
+ * @sig {k: v} -> {k: v} -> {k: v}
+ * @param {Object} l
+ * @param {Object} r
+ * @return {Object}
+ * @see R.mergeRight, R.mergeDeepRight, R.mergeWith, R.mergeWithKey
+ * @deprecated since v0.26.0
+ * @example
+ *
+ *      R.merge({ 'name': 'fred', 'age': 10 }, { 'age': 40 });
+ *      //=> { 'name': 'fred', 'age': 40 }
+ *
+ *      const withDefaults = R.merge({x: 0, y: 0});
+ *      withDefaults({y: 2}); //=> {x: 0, y: 2}
+ * @symb R.merge(a, b) = {...a, ...b}
+ */
+
+var merge =
+/*#__PURE__*/
+_curry2(function merge(l, r) {
+  return _objectAssign$1({}, l, r);
+});
+
+// transforms the held value with the provided function.
+
+var Identity = function (x) {
+  return {
+    value: x,
+    map: function (f) {
+      return Identity(f(x));
+    }
+  };
+};
+/**
+ * Returns the result of "setting" the portion of the given data structure
+ * focused by the given lens to the result of applying the given function to
+ * the focused value.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.16.0
+ * @category Object
+ * @typedefn Lens s a = Functor f => (a -> f a) -> s -> f s
+ * @sig Lens s a -> (a -> a) -> s -> s
+ * @param {Lens} lens
+ * @param {*} v
+ * @param {*} x
+ * @return {*}
+ * @see R.prop, R.lensIndex, R.lensProp
+ * @example
+ *
+ *      const headLens = R.lensIndex(0);
+ *
+ *      R.over(headLens, R.toUpper, ['foo', 'bar', 'baz']); //=> ['FOO', 'bar', 'baz']
+ */
+
+
+var over =
+/*#__PURE__*/
+_curry3(function over(lens, f, x) {
+  // The value returned by the getter function is first transformed with `f`,
+  // then set as the value of an `Identity`. This is then mapped over with the
+  // setter function of the lens.
+  return lens(function (y) {
+    return Identity(f(y));
+  })(x).value;
+});
+
+/**
+ * Returns a partial copy of an object containing only the keys specified. If
+ * the key does not exist, the property is ignored.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.1.0
+ * @category Object
+ * @sig [k] -> {k: v} -> {k: v}
+ * @param {Array} names an array of String property names to copy onto a new object
+ * @param {Object} obj The object to copy from
+ * @return {Object} A new object with only properties from `names` on it.
+ * @see R.omit, R.props
+ * @example
+ *
+ *      R.pick(['a', 'd'], {a: 1, b: 2, c: 3, d: 4}); //=> {a: 1, d: 4}
+ *      R.pick(['a', 'e', 'f'], {a: 1, b: 2, c: 3, d: 4}); //=> {a: 1}
+ */
+
+var pick =
+/*#__PURE__*/
+_curry2(function pick(names, obj) {
+  var result = {};
+  var idx = 0;
+
+  while (idx < names.length) {
+    if (names[idx] in obj) {
+      result[names[idx]] = obj[names[idx]];
+    }
+
+    idx += 1;
+  }
+
+  return result;
+});
+
+/**
+ * Returns the result of "setting" the portion of the given data structure
+ * focused by the given lens to the given value.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.16.0
+ * @category Object
+ * @typedefn Lens s a = Functor f => (a -> f a) -> s -> f s
+ * @sig Lens s a -> a -> s -> s
+ * @param {Lens} lens
+ * @param {*} v
+ * @param {*} x
+ * @return {*}
+ * @see R.prop, R.lensIndex, R.lensProp
+ * @example
+ *
+ *      const xLens = R.lensProp('x');
+ *
+ *      R.set(xLens, 4, {x: 1, y: 2});  //=> {x: 4, y: 2}
+ *      R.set(xLens, 8, {x: 1, y: 2});  //=> {x: 8, y: 2}
+ */
+
+var set =
+/*#__PURE__*/
+_curry3(function set(lens, v, x) {
+  return over(lens, always(v), x);
+});
+
+var Const = function (x) {
+  return {
+    value: x,
+    'fantasy-land/map': function () {
+      return this;
+    }
+  };
+};
+/**
+ * Returns a "view" of the given data structure, determined by the given lens.
+ * The lens's focus determines which portion of the data structure is visible.
+ *
+ * @func
+ * @memberOf R
+ * @since v0.16.0
+ * @category Object
+ * @typedefn Lens s a = Functor f => (a -> f a) -> s -> f s
+ * @sig Lens s a -> s -> a
+ * @param {Lens} lens
+ * @param {*} x
+ * @return {*}
+ * @see R.prop, R.lensIndex, R.lensProp
+ * @example
+ *
+ *      const xLens = R.lensProp('x');
+ *
+ *      R.view(xLens, {x: 1, y: 2});  //=> 1
+ *      R.view(xLens, {x: 4, y: 2});  //=> 4
+ */
+
+
+var view =
+/*#__PURE__*/
+_curry2(function view(lens, x) {
+  // Using `Const` effectively ignores the setter function of the `lens`,
+  // leaving the value returned by the getter function unmodified.
+  return lens(Const)(x).value;
+});
 
 const ParserEND = 0x110000;
 class ParserError extends Error {
@@ -4253,92 +5667,266 @@ var SAMPLE_BOARD = {
 };
 
 var CORS_PROXY = "https://api.rss2json.com/v1/api.json?rss_url=";
+var LOCAL_STORAGE_DATA_KEY = "boards";
+var LOCAL_STORAGE_ACTIVE_KEY = "active";
 var makeBoardId = generateId("BOARD");
 var makeFolderId = generateId("FOLDER");
 var makeCardId = generateId("CARD");
+var historyIndex = 0;
+var history = [];
+
+history.push = function () {
+  if (this.length >= 10) {
+    this.shift();
+  }
+
+  if (this.length && historyIndex !== this.length - 1) {
+    this.splice(historyIndex + 1);
+  }
+
+  Array.prototype.push.apply(this, arguments);
+  historyIndex = this.length - 1;
+};
+
+var view$1 = function view$1(lens) {
+  return view(lens, Boards._data);
+};
+
+var set$1 = function set$1(lens, payload, src) {
+  return set(lens, payload, src || Boards._data);
+};
+
+var boardsLens = function boardsLens() {
+  var boardId = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+  var path = [];
+  boardId && path.push(boardId);
+  return lensPath(path);
+};
+
+var foldersLens = function foldersLens() {
+  var folderId = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+  var path = [Boards.active, "folders"];
+  folderId && path.push(folderId);
+  return lensPath(path);
+};
+
+var cardsLens = function cardsLens(folderId) {
+  var cardId = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+  var path = [Boards.active, "folders", folderId, "cards"];
+  cardId && path.push(cardId);
+  return lensPath(path);
+};
+
 var Boards = {
   _data: null,
-  getAll: function getAll() {
-    return Object.values(Boards._data);
+  active: null,
+  setActive: function setActive(id) {
+    Boards.active = id || null;
+    localStorage.setItem(LOCAL_STORAGE_ACTIVE_KEY, JSON.stringify(id));
   },
-  getBoardWithId: function getBoardWithId(boardId) {
-    return Boards._data[boardId];
+  commit: function commit(data) {
+    var toHistory = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+    Boards._data = data;
+    Boards.cache();
+    if (toHistory) history.push(data);
+  },
+
+  get hasUndo() {
+    return historyIndex !== 0;
+  },
+
+  get hasRedo() {
+    return historyIndex !== history.length - 1;
+  },
+
+  undo: function undo() {
+    if (Boards.hasUndo) {
+      historyIndex -= 1;
+      Boards.commit(clone(history[historyIndex]), false);
+    }
+  },
+  redo: function redo() {
+    if (Boards.hasRedo) {
+      historyIndex += 1;
+      Boards.commit(clone(history[historyIndex]), false);
+    }
+  },
+  getAll: function getAll() {
+    return values(view$1(boardsLens())).sort(function (a, b) {
+      return a.index - b.index;
+    });
+  },
+  getActiveBoard: function getActiveBoard() {
+    return view$1(boardsLens(Boards.active));
+  },
+  getActiveBoardFolders: function getActiveBoardFolders() {
+    return values(view$1(foldersLens()));
+  },
+  getNavigationData: function getNavigationData() {
+    return map(pick(["id", "title"]), Boards.getAll());
   },
   createBoard: function createBoard() {
     var boardId = makeBoardId();
+    var lens = boardsLens(boardId);
 
-    if (Boards._data[boardId]) {
+    if (view$1(lens)) {
       return Boards.createBoard();
     }
 
-    Boards._data[boardId] = {
+    var board = {
+      id: boardId,
+      index: Object.keys(view$1(boardsLens())).length + 1,
       title: null,
-      timezones: null,
+      timezones: [],
       rss_url: null,
       folders: {}
     };
-    Boards.cache();
+    Boards.commit(set$1(lens, board));
   },
   removeBoard: function removeBoard(boardId) {
-    delete Boards._data[boardId];
-    Boards.cache();
-  },
-  updateBoardTitle: function updateBoardTitle(boardId, title) {
-    Boards._data[boardId].title = title;
-    Boards.cache();
-  },
-  createFolder: function createFolder(boardId) {
-    var folderId = makeFolderId();
+    var nextBoard = Boards.getAll().find(function (b) {
+      return b.id !== boardId;
+    });
 
-    if (Boards._data[boardId].folders[folderId]) {
+    if (nextBoard) {
+      Boards.setActive(nextBoard.id);
+    }
+
+    var lens = boardsLens();
+    Boards.commit(set$1(lens, dissoc(boardId, view$1(lens))));
+  },
+  updateBoardTitle: function updateBoardTitle(title) {
+    var boardId = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+    var lens = boardsLens(boardId || Boards.active);
+    Boards.commit(set$1(lens, merge(view$1(lens), {
+      title: title
+    })));
+  },
+  createFolder: function createFolder() {
+    var folderId = makeFolderId();
+    var lens = foldersLens(folderId);
+
+    if (view$1(lens)) {
       return Boards.createFolder();
     }
 
-    Boards._data[boardId].folders[folderId] = {
+    var folder = {
       title: null,
       cards: {},
       id: folderId,
-      boardId: boardId
+      boardId: Boards.active
     };
-    Boards.cache();
+    Boards.commit(set$1(lens, folder));
   },
-  removeFolder: function removeFolder(boardId, folderId) {
-    delete Boards._data[boardId].folders[folderId];
-    Boards.cache();
+  removeFolder: function removeFolder(folderId) {
+    var lens = foldersLens();
+    Boards.commit(set$1(lens, dissoc(folderId, view$1(lens))));
   },
-  updateFolderTitle: function updateFolderTitle(boardId, folderId, title) {
-    Boards._data[boardId].folders[folderId].title = title;
-    Boards.cache();
+  updateFolderTitle: function updateFolderTitle(folderId, title) {
+    var lens = foldersLens(folderId);
+    Boards.commit(set$1(lens, merge(view$1(lens), {
+      title: title
+    })));
   },
-  addFolderCard: function addFolderCard(boardId, folderId, title, link) {
+  addFolderCard: function addFolderCard(folderId, title, link) {
     var cardId = makeCardId();
+    var lens = cardsLens(folderId, cardId);
 
-    if (Boards._data[boardId].folders[folderId].cards[cardId]) {
-      return addFolderItem(boardId, folderId, title, link);
+    if (view$1(lens)) {
+      return addFolderItem(folderId, title, link);
     }
 
-    Boards._data[boardId].folders[folderId].cards[cardId] = {
+    var card = {
       title: title,
       link: link,
-      id: cardId
+      id: cardId,
+      index: Object.keys(view$1(cardsLens(folderId))).length + 1
     };
-    Boards.cache();
+    Boards.commit(set$1(lens, card));
   },
-  removeFolderCard: function removeFolderCard(boardId, folderId, cardId) {
-    delete Boards._data[boardId].folders[folderId].cards[cardId];
-    Boards.cache();
+  removeFolderCard: function removeFolderCard(folderId, cardId) {
+    var lens = cardsLens(folderId, cardId);
+    var index = prop("index", view$1(lens));
+    delete Boards._data[Boards.active].folders[folderId].cards[cardId];
+    var updatedCards = Object.keys(view$1(cardsLens(folderId))).reduce(function (res, cardId) {
+      var card = view$1(cardsLens(folderId, cardId));
+
+      if (card.index >= index) {
+        card.index -= 1;
+      }
+
+      res[cardId] = card;
+      return res;
+    }, {});
+    Boards.commit(set$1(cardsLens(folderId), updatedCards));
+  },
+  moveCard: function moveCard(cardId, fromFolderId, toFolderId, index) {
+    var sourceCard = view$1(cardsLens(fromFolderId, cardId));
+    var cards;
+    var payload;
+
+    if (fromFolderId === toFolderId) {
+      cards = Object.values(view$1(cardsLens(fromFolderId))).sort(function (a, b) {
+        return a.index - b.index;
+      });
+      var targetCard = cards.find(function (c) {
+        return c.index === index;
+      });
+      var draggedIndex = cards.indexOf(sourceCard);
+      var droppedIndex = cards.indexOf(targetCard);
+      var insertionIndex = draggedIndex < droppedIndex ? droppedIndex + 1 : droppedIndex;
+      var deletionIndex = draggedIndex > droppedIndex ? draggedIndex + 1 : draggedIndex;
+
+      if (insertionIndex !== deletionIndex) {
+        cards.splice(insertionIndex, 0, sourceCard);
+        cards.splice(deletionIndex, 1);
+      }
+    } else {
+      cards = Object.values(view$1(cardsLens(toFolderId))).sort(function (a, b) {
+        return a.index - b.index;
+      });
+
+      var _targetCard = cards.find(function (c) {
+        return c.index === index;
+      });
+
+      if (!_targetCard) {
+        cards.push(sourceCard);
+      } else {
+        cards.splice(index - 1, 0, sourceCard);
+      }
+
+      payload = set$1(cardsLens(fromFolderId), dissoc(cardId, view$1(cardsLens(fromFolderId))));
+    }
+
+    payload = set$1(cardsLens(toFolderId), cards.reduce(function (res, c, i) {
+      c.index = i + 1;
+      res[c.id] = c;
+      return res;
+    }, {}), payload);
+    Boards.commit(payload);
   },
   cache: function cache() {
-    return localStorage.setItem("boards", JSON.stringify(Boards._data));
+    return localStorage.setItem(LOCAL_STORAGE_DATA_KEY, JSON.stringify(view$1(boardsLens())));
   },
   loadFromCache: function loadFromCache() {
-    return Boards._data = JSON.parse(localStorage.getItem("boards"));
+    var data = JSON.parse(localStorage.getItem(LOCAL_STORAGE_DATA_KEY));
+    var activeId = JSON.parse(localStorage.getItem(LOCAL_STORAGE_ACTIVE_KEY));
+
+    if (data) {
+      var id = activeId || prop("id", values(view(boardsLens(), data)).find(function (b) {
+        return b.index === 1;
+      }));
+      Boards.setActive(id);
+      Boards.commit(data);
+    }
   },
   loadFromConfig: function loadFromConfig(config) {
-    Boards._data = Object.values(config).reduce(function (result, board) {
+    var payload = Object.values(config).reduce(function (result, board, i) {
       var boardId = makeBoardId();
       result[boardId] = {
         id: boardId,
+        index: i + 1,
         title: board.title,
         timezones: board.timezones,
         rss_url: board.rss_url,
@@ -4347,10 +5935,11 @@ var Boards = {
           result[folderId] = {
             title: folder.title,
             id: folderId,
-            cards: folder.cards.reduce(function (result, card) {
+            cards: folder.cards.reduce(function (result, card, i) {
               var cardId = makeCardId();
               result[cardId] = _objectSpread2(_objectSpread2({}, card), {}, {
-                id: cardId
+                id: cardId,
+                index: i + 1
               });
               return result;
             }, {})
@@ -4360,16 +5949,17 @@ var Boards = {
       };
       return result;
     }, {});
-    Boards.cache();
+    Boards.setActive(prop("id", values(view(boardsLens(), payload)).find(function (b) {
+      return b.index === 1;
+    })));
+    Boards.commit(payload);
   },
   init: function init() {
     Boards.loadFromCache();
 
     if (!Boards._data) {
-      Boards.loadFromConfig(JSON.parse(localStorage.getItem("boards")) || SAMPLE_BOARD);
+      Boards.loadFromConfig(SAMPLE_BOARD);
     }
-
-    Boards.cache();
   }
 };
 var Feed = {
@@ -4390,8 +5980,6 @@ var Feed = {
     });
   }
 };
-
-var drake = dragula({});
 
 var PlaceholderCard = function PlaceholderCard() {
   var isEditingTitle = false;
@@ -4426,9 +6014,14 @@ var PlaceholderCard = function PlaceholderCard() {
             isEditingTitle = false;
 
             if (title) {
-              Boards.addFolderCard(attrs.boardId, attrs.folderId, title);
+              Boards.addFolderCard(attrs.folderId, title);
             }
 
+            title = null;
+          }
+
+          if (e.key === "Escape") {
+            isEditingTitle = false;
             title = null;
           }
         }
@@ -4437,24 +6030,52 @@ var PlaceholderCard = function PlaceholderCard() {
   };
 };
 
+var initialDragAndDropCardsState = {
+  sourceCard: null,
+  targetCard: null,
+  sourceFolderId: null
+};
+
+var dragAndDropCardsState = _objectSpread2({}, initialDragAndDropCardsState);
+
+var resetDragAndDropCardsState = function resetDragAndDropCardsState() {
+  dragAndDropCardsState = _objectSpread2({}, initialDragAndDropCardsState);
+};
+
+var getDragAndDropCardStateClass = function getDragAndDropCardStateClass(card) {
+  return card === dragAndDropCardsState.sourceCard ? "dragging" : card === dragAndDropCardsState.targetCard ? "dropping" : "";
+};
+
 var Folder = function Folder(initialVnode) {
   var isEditingTitle = !initialVnode.attrs.title;
   var newTitle = null;
   return {
     view: function view(_ref2) {
       var attrs = _ref2.attrs;
-      var cardList = Object.values(attrs.cards);
+      var cardList = Object.values(attrs.cards).sort(function (a, b) {
+        return a.index - b.index;
+      });
       return mithril(CSS.folder, {
-        style: CSS.folderStyleAttribute
+        ondragover: function ondragover(e) {
+          e.preventDefault();
+        },
+        ondrop: function ondrop(e) {
+          e.preventDefault();
+
+          if (dragAndDropCardsState.sourceCard) {
+            Boards.moveCard(dragAndDropCardsState.sourceCard.id, dragAndDropCardsState.sourceFolderId, attrs.id, dragAndDropCardsState.targetCard ? dragAndDropCardsState.targetCard.index : 1);
+            resetDragAndDropCardsState();
+            return;
+          }
+        }
       }, [mithril(CSS.folderHeader, !isEditingTitle ? [mithril(CSS.folderTitle, {
         ondblclick: function ondblclick() {
           isEditingTitle = true;
           newTitle = attrs.title;
-        },
-        style: CSS.wordWrapStyleAttribute
+        }
       }, attrs.title), mithril(".pointer", {
         onclick: function onclick() {
-          return Boards.removeFolder(attrs.boardId, attrs.id);
+          return Boards.removeFolder(attrs.id);
         }
       }, mithril(CSS.iconTrash))] : mithril(CSS.inputField, {
         oncreate: function oncreate(vnode) {
@@ -4469,7 +6090,7 @@ var Folder = function Folder(initialVnode) {
           isEditingTitle = false;
 
           if (!attrs.title && !newTitle) {
-            Boards.removeFolder(attrs.boardId, attrs.id);
+            Boards.removeFolder(attrs.id);
           }
 
           newTitle = null;
@@ -4479,37 +6100,53 @@ var Folder = function Folder(initialVnode) {
             isEditingTitle = false;
 
             if (newTitle) {
-              Boards.updateFolderTitle(attrs.boardId, attrs.id, newTitle);
+              Boards.updateFolderTitle(attrs.id, newTitle);
               newTitle = null;
               return;
             }
 
             if (!attrs.title && !newTitle) {
-              Boards.removeFolder(attrs.boardId, attrs.id);
+              Boards.removeFolder(attrs.id);
+            }
+          }
+
+          if (e.key === "Escape") {
+            isEditingTitle = false;
+
+            if (!attrs.title) {
+              Boards.removeFolder(attrs.id);
             }
           }
         }
       })), mithril(CSS.folderCardsWrapper, {
         id: initialVnode.attrs.id,
-        oncreate: function oncreate(vnode) {
-          return drake.containers.push(vnode.dom);
-        },
         style: {
           minHeight: "160px"
         }
       }, cardList.length ? cardList.map(function (item) {
-        return mithril(".relative.hide-child", {
+        return mithril(".relative.hide-child.break-word", {
           id: item.id
         }, [mithril(CSS.folderCard, {
+          draggable: true,
           href: item.link,
-          style: CSS.wordWrapStyleAttribute
+          "class": getDragAndDropCardStateClass(item),
+          ondragstart: function ondragstart(e) {
+            dragAndDropCardsState.sourceCard = item;
+            dragAndDropCardsState.sourceFolderId = attrs.id;
+          },
+          ondragover: function ondragover(_e) {
+            if (dragAndDropCardsState.sourceCard) {
+              dragAndDropCardsState.targetCard = item;
+            }
+          },
+          ondragend: function ondragend(_e) {
+            resetDragAndDropCardsState();
+          }
         }, item.title), mithril(".pointer", {
           onclick: function onclick() {
-            return Boards.removeFolderCard(attrs.boardId, attrs.id, item.id);
+            return Boards.removeFolderCard(attrs.id, item.id);
           }
-        }, mithril(CSS.iconX, {
-          style: CSS.iconXStyleAttribute
-        }))]);
+        }, mithril(CSS.iconX))]);
       }) : null), mithril(PlaceholderCard, {
         boardId: attrs.boardId,
         folderId: attrs.id
@@ -4521,17 +6158,11 @@ var Folder = function Folder(initialVnode) {
 var FolderPlaceholder = {
   view: function view(_ref3) {
     var attrs = _ref3.attrs;
-    return mithril(CSS.folderPlaceholder, {
-      style: {
-        minWidth: "16rem"
-      }
-    }, mithril(".pointer", {
+    return mithril(CSS.folderPlaceholder, mithril(".pointer", {
       onclick: function onclick() {
-        return Boards.createFolder(attrs.boardId);
+        return Boards.createFolder();
       }
-    }, mithril(CSS.iconPlus, {
-      style: CSS.iconPlusStyleAttribute
-    })));
+    }, mithril("".concat(CSS.iconPlus, ".icon-plus--big"))));
   }
 };
 
@@ -4541,17 +6172,11 @@ var Rss = {
     return Feed.fetch(attrs.url);
   },
   view: function view() {
-    return mithril(CSS.folder, {
-      style: CSS.folderStyleAttribute
-    }, [mithril(CSS.iconRss), !Feed.data && !Feed.error ? "Loading.." : null, Feed.error ? mithril(".db.pa2.tc", [mithril(CSS.iconFrown, {
-      style: CSS.iconFrownStyleAttribute
-    }), mithril(".f6", "error fetching url: ".concat(attrs.url))]) : null, Feed.data ? Object.values(Feed.data).map(function (item) {
+    return mithril(CSS.folder, [mithril(CSS.iconRss), !Feed.data && !Feed.error ? "Loading.." : null, Feed.error ? mithril(".db.pa2.tc", [mithril(CSS.iconFrown), mithril(".f6", "error fetching url: ".concat(attrs.url))]) : null, Feed.data ? Object.values(Feed.data).map(function (item) {
       return mithril(CSS.folderCard, {
         href: item.link,
         target: "_blank"
-      }, [item.title, mithril(CSS.iconExternalLink, {
-        style: CSS.iconExternalLinkStyleAttribute
-      })]);
+      }, [item.title, mithril(CSS.iconExternalLink)]);
     }) : null]);
   }
 };
@@ -8140,12 +9765,7 @@ var Clock = function Clock() {
 var ClockFolder = {
   view: function view(_ref2) {
     var attrs = _ref2.attrs;
-    return mithril(CSS.folder, {
-      style: {
-        height: "min-content",
-        minWidth: "16rem"
-      }
-    }, [mithril(CSS.iconClock), mithril(CSS.folderCardsWrapper, {
+    return mithril(CSS.folder, [mithril(CSS.iconClock), mithril(CSS.folderCardsWrapper, {
       style: {
         minHeight: "120px"
       }
@@ -8159,26 +9779,104 @@ var ClockFolder = {
 
 var App = function App() {
   Boards.init();
-
-  var getActiveBoardId = function getActiveBoardId() {
-    var allBoards = Boards.getAll();
-    return allBoards.length ? allBoards[0].id : null;
-  };
-
-  var activeBoardId = getActiveBoardId();
-
-  var handleNewConfig = function handleNewConfig(config) {
-    Boards.loadFromConfig(config);
-    activeBoardId = getActiveBoardId();
-  };
-
+  var isEditingTitle = false;
+  var newTitle = null;
+  var isEditingNewBoardTitle = false;
+  var newBoardTitle = null;
   return {
     view: function view() {
-      var board = Boards.getBoardWithId(activeBoardId);
-      var folders = board.folders ? Object.values(board.folders) : [];
-      return mithril(CSS.appContainer, [mithril(CSS.header, [mithril(CSS.boardTitle, board.title), mithril(CSS.selectFileButton, {
-        onchange: readConfigFile(handleNewConfig)
-      }), mithril(CSS.selectFileLabel, "load config")]), mithril(CSS.foldersContainer, [].concat(_toConsumableArray(folders.map(function (folder) {
+      var board = Boards.getActiveBoard();
+      var folders = Boards.getActiveBoardFolders();
+      var navItems = Boards.getNavigationData();
+      return mithril(CSS.appContainer, [mithril(CSS.navigationWrapper, [mithril(".mr3", "Boards: ")].concat(_toConsumableArray(navItems.map(function (i) {
+        return i.title ? mithril(".pointer.mr4".concat(i.id === Boards.active ? ".underline" : ""), {
+          onclick: function onclick() {
+            return Boards.setActive(i.id);
+          }
+        }, i.title) : mithril(CSS.navigationTitleInputField, {
+          oncreate: function oncreate(vnode) {
+            vnode.dom.focus();
+          },
+          value: newBoardTitle,
+          maxlength: 30,
+          oninput: function oninput(e) {
+            newBoardTitle = e.target.value;
+          },
+          onfocusout: function onfocusout() {
+            newBoardTitle = null;
+            isEditingNewBoardTitle = false;
+            Boards.removeBoard(i.id);
+          },
+          onkeydown: function onkeydown(e) {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              isEditingNewBoardTitle = false;
+
+              if (newBoardTitle) {
+                Boards.updateBoardTitle(newBoardTitle, i.id);
+                newBoardTitle = null;
+                Boards.setActive(i.id);
+                return;
+              }
+
+              Boards.removeBoard(i.id);
+              return;
+            }
+
+            if (e.key === "Escape") {
+              isEditingNewBoardTitle = false;
+              newBoardTitle = null;
+              Boards.removeBoard(i.id);
+              return;
+            }
+          }
+        });
+      })), [!isEditingNewBoardTitle && mithril(".new-board-button-wrapper.pointer", {
+        onclick: function onclick() {
+          Boards.createBoard();
+          isEditingNewBoardTitle = true;
+        }
+      }, mithril("".concat(CSS.iconPlus, ".icon-plus--small"))), mithril(CSS.uploadConfigContainer, [mithril(CSS.selectFileButton, {
+        onchange: readConfigFile(Boards.loadFromConfig)
+      }), mithril(CSS.selectFileLabel, "load config")])])), board ? [mithril(CSS.header, [!isEditingTitle ? mithril(CSS.boardTitle, {
+        ondblclick: function ondblclick() {
+          isEditingTitle = true;
+          newTitle = board.title;
+        }
+      }, board.title) : mithril(CSS.boardTitleInputField, {
+        oncreate: function oncreate(vnode) {
+          return vnode.dom.focus();
+        },
+        value: newTitle,
+        maxlength: 30,
+        oninput: function oninput(e) {
+          return newTitle = e.target.value;
+        },
+        onfocusout: function onfocusout() {
+          isEditingTitle = false;
+          newTitle = null;
+        },
+        onkeydown: function onkeydown(e) {
+          if (e.key === "Enter") {
+            isEditingTitle = false;
+
+            if (newTitle) {
+              Boards.updateBoardTitle(newTitle);
+              newTitle = null;
+              return;
+            }
+          }
+
+          if (e.key === "Escape") {
+            isEditingTitle = false;
+            newTitle = null;
+          }
+        }
+      }), mithril(".pointer", {
+        onclick: function onclick() {
+          return Boards.removeBoard(board.id);
+        }
+      }, "delete")]), mithril(CSS.foldersContainer, [].concat(_toConsumableArray(folders.map(function (folder) {
         return mithril(Folder, _objectSpread2(_objectSpread2({}, folder), {}, {
           boardId: board.id
         }));
@@ -8186,9 +9884,9 @@ var App = function App() {
         boardId: board.id
       }), board.rss_url ? mithril(Rss, {
         url: board.rss_url
-      }) : null, board.timezones.length ? mithril(ClockFolder, {
+      }) : null, board.timezones && board.timezones.length ? mithril(ClockFolder, {
         timezones: board.timezones
-      }) : null]))]);
+      }) : null]))] : null]);
     },
     oncreate: function oncreate() {
       feather.replace();
@@ -8199,5 +9897,14 @@ var App = function App() {
   };
 };
 
+document.addEventListener("keydown", function (event) {
+  if (event.ctrlKey && event.key === "z") {
+    Boards.undo();
+    mithril.redraw();
+  } else if (event.ctrlKey && event.key === "y") {
+    Boards.redo();
+    mithril.redraw();
+  }
+});
 var mountNode = document.querySelector("#app");
 mithril.mount(mountNode, App);
