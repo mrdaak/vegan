@@ -23,9 +23,10 @@ Go to https://mrdaak.github.io/vegan/
 - Basic undo (CTRL+z), redo (CTRL+y)
 
 ** TODO TODO
+- validate configuration on import + add export option
 - draggable folders
 - card view
-- browser extension
+- browser extension(?)
 
 ** Setup
 

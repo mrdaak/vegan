@@ -53,10 +53,10 @@ export const Boards = {
     Boards.active = id || null;
     localStorage.setItem(LOCAL_STORAGE_ACTIVE_KEY, JSON.stringify(id));
   },
-  commit: data => {
+  commit: (data, toHistory = true) => {
     Boards._data = data;
     Boards.cache();
-    history.push(data);
+    if (toHistory) history.push(data);
   },
   get hasUndo() {
     return historyIndex !== 0;
@@ -67,13 +67,13 @@ export const Boards = {
   undo: () => {
     if (Boards.hasUndo) {
       historyIndex -= 1;
-      Boards._data = R.clone(history[historyIndex]);
+      Boards.commit(R.clone(history[historyIndex]), false);
     }
   },
   redo: () => {
     if (Boards.hasRedo) {
       historyIndex += 1;
-      Boards._data = R.clone(history[historyIndex]);
+      Boards.commit(R.clone(history[historyIndex]), false);
     }
   },
   getAll: () => R.values(view(boardsLens())).sort((a, b) => a.index - b.index),

@@ -1,6 +1,6 @@
 {
   "name": "vegan",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Minimalistic kanban-like client implementation",
   "license": "MIT",
   "repository": {
@@ -31,7 +31,7 @@
     "@babel/register": "^7.5.5",
     "babel-core": "^7.0.0-bridge.0",
     "es-module-loader": "^2.3.0",
-    "http-server": "^0.11.1",
+    "http-server": "^0.12.3",
     "husky": "^3.0.9",
     "prettier": "1.19.1",
     "pretty-quick": "^2.0.1",
