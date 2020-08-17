@@ -4,7 +4,7 @@
 
 * Vegan
 
-Vegan is a minimalistic kanban-like client implementation I use for tracking projects.
+Vegan is a minimalistic "Kanban boardish" client.
 
 #+BEGIN_QUOTE
 play on words: "wekan" + "vegan" => vegan

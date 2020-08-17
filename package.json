@@ -1,7 +1,7 @@
 {
   "name": "vegan",
   "version": "0.2.0",
-  "description": "Minimalistic kanban-like client implementation",
+  "description": "Minimalistic 'Kanban boardish' client.",
   "license": "MIT",
   "repository": {
     "type": "git",
